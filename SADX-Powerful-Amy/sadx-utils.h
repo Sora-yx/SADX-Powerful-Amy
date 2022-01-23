@@ -85,3 +85,6 @@ static inline int Amy_CheckStop(CharObj2* a1, EntityData1* a2, EntityData2* a3)
 	}
 	return result;
 }
+
+FunctionPointer(void, DrawCharacterShadow, (EntityData1* a1, shadowwk* a2), 0x49F0B0);
+FunctionPointer(void, DrawEventAction, (EntityData1* a1), 0x4187D0);
