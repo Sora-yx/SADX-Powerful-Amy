@@ -1,0 +1,78 @@
+#pragma once
+
+void ReadConfig(const char* path, const HelperFunctions& helperFunctions);
+
+enum AmyActions {
+	Act_Amy_Init,
+	Act_Amy_Stand,
+	Act_Amy_Walk,
+	Act_Amy_Path1,
+	Act_Amy_DashSpeedPanel,
+	Act_Amy_Jump,
+	Act_Amy_Spring,
+	Act_Amy_Launch,
+	Act_Amy_Fall,
+	Act_Amy_Brake,
+	Act_Amy_Push,
+	Act_Amy_Damage,
+	Act_Amy_Back,
+	Act_Amy_ObjectControl,
+	Act_Amy_Knocked,
+	Act_Amy_Handle,
+	Act_Amy_Balance,
+	Act_Amy_BarrelOn,
+	Act_Amy_BarrelOff,
+	Act_Amy_HammerAttack,
+	Act_Amy_HammerSpin,
+	Act_Amy_HammerJump,
+	Act_Amy_AirHammerAttack,
+	Act_Amy_PickObject,
+	Act_Amy_PutObject,
+	Act_Amy_HoldObject,
+	Act_Amy_ThrowObject,
+	Act_Amy_WalkObject,
+	Act_Amy_Throw,
+	Act_Amy_BrakeObject,
+	Act_Amy_FallObject,
+	Act_Amy_JumpObject,
+	Act_Amy_SpringObject,
+	Act_Amy_LaunchObject,
+	Act_Amy_Pull,
+	Act_Amy_AirThrow,
+	Act_Amy_ShakeTree,
+	Act_Amy_Shaken,
+	Act_Amy_MonkeyBar,
+	Act_Amy_MonkeyBarMove,
+	Act_Amy_Ladder,
+	Act_Amy_LadderMove,
+	Act_Amy_JumpPanel,
+	Act_Amy_JumpPanelOn,
+	Act_Amy_Captured,
+	Act_Amy_Event,
+	Act_Amy_Drown,
+	Act_Amy_Death,
+	Act_Amy_BumperCar,
+	Act_Amy_PetStart,
+	Act_Amy_Pet,
+	Act_Amy_PetSop,
+	Act_Amy_Whistle,
+	Act_Amy_Debug,
+
+	// Custom Ones
+
+	Act_Amy_SpinDash = 60,
+	Act_Amy_Rolling,
+};
+
+enum AmyAnimations {
+	Anm_Amy_Stand,
+	Anm_Amy_Jump = 14,
+	Anm_Amy_Fall = 18,
+	Anm_Amy_HangHook = 55,
+	Anm_Amy_HammerSpinAttack = 90,
+	Anm_Amy_HammerSomerTrickA = 95,
+	Anm_Amy_HammerSomerTrickB,
+	Anm_Amy_HammerSomerTrickC
+};
+
+void init_AmyHacks();
