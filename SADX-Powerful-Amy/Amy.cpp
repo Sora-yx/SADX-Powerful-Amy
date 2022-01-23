@@ -22,9 +22,10 @@ NJS_TEXLIST AmyEffR_TEXLIST = { arrayptrandlength(AmyEffR_TEXNAMES) };
 
 static Trampoline* LoadLevelObject_t = nullptr;
 
+PhysicsData Amy_SA2Physics = { 60, 2, 16, 16, 1.3, 0.6,	1.3, 3, 0.23, 0.46, 1.39, 2.3, 3.7, 5.09, 0.076, 0.048, 0.031, -0.06, -0.18, -0.17, -0.028, -0.008, -0.01, -0.4, -0.1, -0.6, -0.2825, 0.3, 4, 10, 0.08, 7,	5.4 };
+
 void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 {
-
 	auto mwp = (motionwk2*)data2;
 
 	switch (data->Action)
@@ -165,6 +166,8 @@ void __cdecl LoadLevelObject_r() {
 
 	auto original = reinterpret_cast<decltype(LoadLevelObject_r)*>(LoadLevelObject_t->Target());
 	original();
+
+
 }
 
 void init_AmyHacks() {
@@ -174,5 +177,8 @@ void init_AmyHacks() {
 	LoadLevelObject_t = new Trampoline((int)LoadLevelObject, (int)LoadLevelObject + 0x7, LoadLevelObject_r);
 
 	Load_AmyNewMDlAnim();
+
+	memcpy(&PhysicsArray[Characters_Amy], &Amy_SA2Physics, sizeof(PhysicsArray[Characters_Amy]));
+	//memcpy(&PhysicsArray[Characters_Amy], &PhysicsArray[Characters_Sonic], sizeof(PhysicsArray[Characters_Amy]));
 	return;
 }
