@@ -1,5 +1,6 @@
 #pragma once
 
+extern HelperFunctions HelperFunctionsGlobal;
 void ReadConfig(const char* path, const HelperFunctions& helperFunctions);
 
 enum AmyActions {
@@ -72,7 +73,13 @@ enum AmyAnimations {
 	Anm_Amy_HammerSpinAttack = 90,
 	Anm_Amy_HammerSomerTrickA = 95,
 	Anm_Amy_HammerSomerTrickB,
-	Anm_Amy_HammerSomerTrickC
+	Anm_Amy_HammerSomerTrickC,
+
+	//custom
+	Anm_Amy_SpinDash = 100,
+	Anm_Amy_Rolling,
+	Anm_Amy_Uncurl,
+	Anm_Amy_SpinBall
 };
 
 void init_AmyHacks();

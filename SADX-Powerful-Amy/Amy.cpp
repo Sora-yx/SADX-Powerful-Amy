@@ -1,9 +1,24 @@
 #include "pch.h"
 #include "abilities.h"
 
+ModelInfo* JumpBallMDL = nullptr;
+AnimationFile* SpinDashMotion = nullptr;
+AnimationFile* RollingMotion = nullptr;
+AnimationFile* UncurlMotion = nullptr;
+AnimationFile* SpinBallMotion = nullptr;
+
 Trampoline* Amy_Exec_t = nullptr;
 Trampoline* Amy_RunsActions_t = nullptr;
+
 Trampoline* Sonic_Main_t = nullptr;
+
+AnimData SpinDashAnim = { nullptr, 78, 10, Anm_Amy_SpinDash, 0.25f, 0.20f };
+AnimData RollingAnim = { nullptr, 78, 9, Anm_Amy_Rolling, 0.25f, 0.70f };
+AnimData UncurlAnim = { nullptr, 78, 4, Anm_Amy_Uncurl, 0.0625f, 1.0f };
+AnimData SpinBallAnim = { nullptr, 78, 3, Anm_Amy_SpinBall, 0.50f, 1.0f };
+
+NJS_TEXNAME AmyEffR_TEXNAMES[40];
+NJS_TEXLIST AmyEffR_TEXLIST = { arrayptrandlength(AmyEffR_TEXNAMES) };
 
 void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 {
@@ -69,13 +84,36 @@ void __cdecl Sonic_Main_r(ObjectMaster* obj)
 	EntityData1* data = (EntityData1*)obj->Data1;
 	auto ed2 = (EntityData2*)obj->Data2;
 	auto co2 = ed2->CharacterData;
+}
 
-	co2->SpindashSpeed = co2->SpindashSpeed;
+void Load_AmyNewMDlAnim() {
 
+	JumpBallMDL = LoadBasicModel("JumpBall");
+
+	return;
+
+	LoadAnimation(&SpinDashMotion, "SpinDash", HelperFunctionsGlobal);
+	SpinDashAnim.Animation = new NJS_ACTION;
+	SpinDashAnim.Animation->motion = SpinDashMotion->getmotion();
+
+	LoadAnimation(&RollingMotion, "Rolling", HelperFunctionsGlobal);
+	RollingAnim.Animation = new NJS_ACTION;
+	RollingAnim.Animation->motion = RollingMotion->getmotion();
+
+	LoadAnimation(&UncurlMotion, "Uncurl", HelperFunctionsGlobal);
+	UncurlAnim.Animation = new NJS_ACTION;
+	UncurlAnim.Animation->motion = UncurlMotion->getmotion();
+
+	LoadAnimation(&SpinBallMotion, "SpinBall", HelperFunctionsGlobal);
+	SpinBallAnim.Animation = new NJS_ACTION;
+	SpinBallAnim.Animation->motion = UncurlMotion->getmotion();
 }
 
 void init_AmyHacks() {
 	Amy_Exec_t = new Trampoline((int)Amy_Main, (int)Amy_Main + 0x7, Amy_Main_r);
 	Amy_RunsActions_t = new Trampoline(0x488880, 0x488888, Amy_RunsActions_r);
 	Sonic_Main_t = new Trampoline((int)Sonic_Main, (int)Sonic_Main + 0x7, Sonic_Main_r);
+
+	Load_AmyNewMDlAnim();
+	return;
 }
