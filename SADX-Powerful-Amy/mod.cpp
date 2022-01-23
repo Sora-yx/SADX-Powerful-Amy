@@ -27,6 +27,7 @@ extern "C" {
 	__declspec(dllexport) void __cdecl OnFrame()
 	{
 
+
 	}
 
 	__declspec(dllexport) ModInfo SADXModInfo = { ModLoaderVer };

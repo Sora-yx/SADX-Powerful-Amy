@@ -4,6 +4,7 @@ extern HelperFunctions HelperFunctionsGlobal;
 void ReadConfig(const char* path, const HelperFunctions& helperFunctions);
 
 extern Buttons BounceButton;
+extern Buttons LightDashButton;
 
 enum AmyActions {
 	Act_Amy_Init,
@@ -67,7 +68,8 @@ enum AmyActions {
 	Act_Amy_Rolling,
 	Act_Amy_HomingAttack,
 	Act_Amy_Bounce,
-	Act_Amy_BounceUp
+	Act_Amy_BounceUp,
+	Act_Amy_LightDash
 };
 
 enum AmyAnimations {
@@ -89,3 +91,4 @@ enum AmyAnimations {
 };
 
 void init_AmyHacks();
+void init_LightDashHack();

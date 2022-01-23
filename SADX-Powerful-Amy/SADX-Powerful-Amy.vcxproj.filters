@@ -68,5 +68,8 @@
     <ClCompile Include="bounce.cpp">
       <Filter>Source Files\abilities</Filter>
     </ClCompile>
+    <ClCompile Include="light-dash.cpp">
+      <Filter>Source Files\abilities</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

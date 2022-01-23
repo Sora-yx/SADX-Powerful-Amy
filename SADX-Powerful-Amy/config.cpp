@@ -1,6 +1,7 @@
 #include "pch.h"
 
 Buttons BounceButton = Buttons_X;
+Buttons LightDashButton = Buttons_Y;
 
 
 void ReadConfig(const char* path, const HelperFunctions& helperFunctions) {
