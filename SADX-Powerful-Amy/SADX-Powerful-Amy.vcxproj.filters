@@ -62,5 +62,11 @@
     <ClCompile Include="rolling.cpp">
       <Filter>Source Files\abilities</Filter>
     </ClCompile>
+    <ClCompile Include="homing-attack.cpp">
+      <Filter>Source Files\abilities</Filter>
+    </ClCompile>
+    <ClCompile Include="bounce.cpp">
+      <Filter>Source Files\abilities</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

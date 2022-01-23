@@ -3,6 +3,8 @@
 extern HelperFunctions HelperFunctionsGlobal;
 void ReadConfig(const char* path, const HelperFunctions& helperFunctions);
 
+extern Buttons BounceButton;
+
 enum AmyActions {
 	Act_Amy_Init,
 	Act_Amy_Stand,
@@ -63,12 +65,16 @@ enum AmyActions {
 
 	Act_Amy_SpinDash = 60,
 	Act_Amy_Rolling,
+	Act_Amy_HomingAttack,
+	Act_Amy_Bounce,
+	Act_Amy_BounceUp
 };
 
 enum AmyAnimations {
 	Anm_Amy_Stand,
 	Anm_Amy_Jump = 14,
 	Anm_Amy_Fall = 18,
+	Anm_Amy_Brake = 20,
 	Anm_Amy_HangHook = 55,
 	Anm_Amy_HammerSpinAttack = 90,
 	Anm_Amy_HammerSomerTrickA = 95,
