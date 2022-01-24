@@ -192,7 +192,7 @@ LABEL_7:
 			}
 			else
 			{
-				if ( (data1->Status & Status_Ball) != 0 && (co2->SonicSpinTimer & 0x11) != 0)
+				if ( (data1->Status & Status_Ball) != 0 && (co2->SonicSpinTimer & 0x11) != 0 && data1->Action != Act_Amy_Jump && data1->Action != Act_Amy_Fall)
 				{
 					njSetTexture(&AmyEffR_TEXLIST);
 					Anim = Anm_Amy_SpinBall;

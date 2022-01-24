@@ -8,7 +8,7 @@ signed int Amy_CheckBounceAttack(CharObj2* a1, EntityData1* a2)
 	{
 		return 0;
 	}
-	a1->AnimationThing.Index = 14;
+	a1->AnimationThing.Index = Anm_Amy_Rolling;
 	a2->Action = Act_Amy_Bounce;
 	a2->Status |= Status_Attack | Status_Ball;
 	a1->Speed.y = -5.0;
@@ -23,7 +23,7 @@ signed int Amy_PerformBounce(CharObj2* co2, EntityData1* a2)
 	{
 		return 0;
 	}
-	co2->AnimationThing.Index = 14;
+	co2->AnimationThing.Index = Anm_Amy_Rolling;
 	a2->Status |= Status_Attack | Status_Ball;
 	a2->Action = Act_Amy_Bounce;
 	co2->Speed.y = -7.0;

@@ -58,8 +58,6 @@ void InitSA2AnimHack(AnimThing* animinfo)
 
 	SpinBallAnim.Animation->object = JumpBallMDL->getmodel();
 	NewAmyAnimData[Anm_Amy_SpinBall] = SpinBallAnim;
-
-	//animinfo->AnimData = NewAmyAnimData;
 }
 
 void Init_AmyNewAnim() {
@@ -69,8 +67,8 @@ void Init_AmyNewAnim() {
 	WriteData((AnimData**)0x485caB, NewAmyAnimData);
 	WriteData((AnimData**)0x486011, NewAmyAnimData);	
 			
-
 	WriteData((AnimData**)0x488777, NewAmyAnimData);	
+
 	//WriteData((AnimData**)0x48717A, NewAmyAnimData);
 	return;
 }
