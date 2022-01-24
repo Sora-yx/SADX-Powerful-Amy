@@ -2,6 +2,8 @@
 
 void LoadAnimation(AnimationFile** info, const char* name, const HelperFunctions& helperFunctions)
 {
+	PrintDebug("[Powerful Amy] Loading Animation: %s... ", name);
+
 	std::string fullPath = "system\\anim\\";
 	fullPath = fullPath + name + ".saanim";
 
@@ -9,17 +11,20 @@ void LoadAnimation(AnimationFile** info, const char* name, const HelperFunctions
 
 	if (anm->getmodelcount() == 0)
 	{
+		PrintDebug("Failed!\n");
 		delete anm;
 		*info = nullptr;
 	}
 	else
 	{
 		*info = anm;
+		PrintDebug("Done.\n");
 	}
+
 };
 
 ModelInfo* LoadBasicModel(const char* name) {
-	PrintDebug("Loading basic model: %s... ", name);
+	PrintDebug("[Powerful Amy] Loading basic model: %s... ", name);
 
 	std::string fullPath = "system\\mdl\\";
 	fullPath = fullPath + name + ".sa1mdl";

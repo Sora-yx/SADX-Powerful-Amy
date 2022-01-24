@@ -84,7 +84,7 @@ enum AmyAnimations {
 	Anm_Amy_HammerSomerTrickC,
 
 	//custom
-	Anm_Amy_SpinDash = 100,
+	Anm_Amy_SpinDash = 102,
 	Anm_Amy_Rolling,
 	Anm_Amy_Uncurl,
 	Anm_Amy_SpinBall
@@ -92,3 +92,6 @@ enum AmyAnimations {
 
 void init_AmyHacks();
 void init_LightDashHack();
+void Load_AmyNewMDlAnim();
+void InitSA2AnimHack(AnimThing* animinfo);
+void Init_AmyNewAnim();

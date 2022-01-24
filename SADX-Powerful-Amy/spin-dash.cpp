@@ -9,7 +9,7 @@ BOOL Amy_ChargeSpindash(CharObj2* co2, EntityData1* Data1)
     }
 
     Data1->Action = Act_Amy_SpinDash;
-    co2->AnimationThing.Index = 22; //jumpballAnim
+    co2->AnimationThing.Index = Anm_Amy_SpinDash; //jumpballAnim
     Data1->Status |= 0x500u;
 
     co2->SonicSpinTimer = 0;
@@ -72,7 +72,7 @@ signed int Amy_ReleaseSpindash(EntityData1* a1, CharObj2* a2)
         else
         {
             a1->Action = Act_Amy_Rolling;
-            a2->AnimationThing.Index = 15;
+            a2->AnimationThing.Index = Anm_Amy_Rolling;
             a2->Speed.x = a2->SpindashSpeed;
            // PlaySound(768, 0, 0, 0);
             /**DoSoundQueueThing(767);
@@ -108,38 +108,13 @@ signed int Amy_ReleaseSpindash(EntityData1* a1, CharObj2* a2)
     return result;
 }
 
-void SpinDash_DoModelTwist(EntityData1* data, CharObj2* co2) {
-
-    NJS_VECTOR a2;
-    int anim = co2->AnimationThing.Index;
-
-    if (anim == 14 && (data->Status & (Status_OnColli | Status_Ground)) != 0)
-    {                       
-        a2.x = 0.0;
-        a2.y = -1.0;
-        a2.z = 0.0;
-        njTranslateV(0, &a2);
-        njRotateZ(0, 0x2000);
-        a2.x = 0.69999999;
-        a2.y = 1.1;
-        a2.z = 0.80000001;
-        njScaleV(0, &a2);
-    }
-
-    if (co2->AnimationThing.State != 2) {
-        if ((data->Status & Status_Ball) != 0 && (co2->SonicSpinTimer & 0x11) != 0)
-        {
-            anim = 32;
-        }
-    }
-}
 
 void Do_SpinDash(CharObj2* co2, EntityData1* data, EntityData2* data2)
 {
 
     if (Amy_CheckBeInTheAir(data, co2, data2))
     {
-        co2->AnimationThing.Index = 22; //jumpballAnim
+        co2->AnimationThing.Index = Anm_Amy_SpinDash; //jumpballAnim
         co2->SpindashSpeed = 5.0f;       // 5.0
         data->Status |= 0x500u;
         /**DoSoundQueueThing(767);

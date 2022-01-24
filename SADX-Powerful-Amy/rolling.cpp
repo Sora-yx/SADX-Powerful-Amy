@@ -10,7 +10,7 @@ void DoRolling(EntityData1* data, CharObj2* co2, EntityData2* data2)
 
     if (Amy_CheckBeInTheAir(data, co2, data2))
     {
-        co2->AnimationThing.Index = 22; //jumpballAnim
+        co2->AnimationThing.Index = Anm_Amy_SpinDash; //jumpballAnim
         co2->SpindashSpeed = 5.0f;       // 5.0
         data->Status |= 0x500u;
         /**DoSoundQueueThing(767);

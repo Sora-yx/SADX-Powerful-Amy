@@ -71,5 +71,8 @@
     <ClCompile Include="light-dash.cpp">
       <Filter>Source Files\abilities</Filter>
     </ClCompile>
+    <ClCompile Include="animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

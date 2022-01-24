@@ -168,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Amy.cpp" />
+    <ClCompile Include="animation.cpp" />
     <ClCompile Include="bounce.cpp" />
     <ClCompile Include="config.cpp" />
     <ClCompile Include="dllmain.cpp" />
