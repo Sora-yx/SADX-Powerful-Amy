@@ -20,6 +20,7 @@ void DoRolling(EntityData1* data, CharObj2* co2, EntityData2* data2)
     if (Amy_CheckJump(co2, data, data2))
     {
         data->Status &= ~Status_Ground | Status_OnColli;
+        co2->AnimationThing.Index = Anm_Amy_SpinDash;
         return;
     }
 

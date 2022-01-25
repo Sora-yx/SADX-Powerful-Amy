@@ -8,7 +8,7 @@ signed int Amy_CheckBounceAttack(CharObj2* a1, EntityData1* a2)
 	{
 		return 0;
 	}
-	a1->AnimationThing.Index = Anm_Amy_Rolling;
+	a1->AnimationThing.Index = Anm_Amy_SpinDash;
 	a2->Action = Act_Amy_Bounce;
 	a2->Status |= Status_Attack | Status_Ball;
 	a1->Speed.y = -5.0;
@@ -23,7 +23,7 @@ signed int Amy_PerformBounce(CharObj2* co2, EntityData1* a2)
 	{
 		return 0;
 	}
-	co2->AnimationThing.Index = Anm_Amy_Rolling;
+	co2->AnimationThing.Index = Anm_Amy_SpinDash;
 	a2->Status |= Status_Attack | Status_Ball;
 	a2->Action = Act_Amy_Bounce;
 	co2->Speed.y = -7.0;
@@ -70,6 +70,7 @@ void Do_BounceDown(EntityData1* data1, CharObj2* co2, motionwk2* data2) {
 		}
 	}
 	co2->Speed.x = 5.0;
+	data1->Status &= ~Status_Ball;
 	data1->Action = Act_Amy_HomingAttack;
 	DoHomingAttackThing(co2, data1, (EntityData2*)data2);
 }
@@ -114,14 +115,16 @@ void Do_BounceUP(EntityData1* data1, CharObj2* co2, motionwk2* data2) {
 	{
 		if (!Amy_PerformBounce(co2, data1))
 		{
-			if (co2->AnimationThing.field_A == 14 && co2->Speed.y <= 0.0)
+			if (co2->AnimationThing.field_A == Anm_Amy_Rolling && co2->Speed.y <= 0.0)
 			{
-				co2->AnimationThing.field_A = Anm_Amy_Fall; //falling
+				data1->Status &= ~Status_Ball;
+				co2->AnimationThing.Index = Anm_Amy_Fall; //falling
 			}
 		}
 	}
 	else
 	{
+		data1->Status &= ~Status_Ball;
 		co2->Speed.x = 5.0;
 		data1->Action = Act_Amy_HomingAttack;
 		DoHomingAttackThing(co2, data1, (EntityData2*)data2);

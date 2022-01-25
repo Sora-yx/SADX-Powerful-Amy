@@ -67,7 +67,7 @@ void Init_AmyNewAnim() {
 	WriteData((AnimData**)0x485caB, NewAmyAnimData);
 	WriteData((AnimData**)0x486011, NewAmyAnimData);	
 			
-	WriteData((AnimData**)0x488777, NewAmyAnimData);	
+	WriteData((AnimData**)0x488777, NewAmyAnimData);
 
 	//WriteData((AnimData**)0x48717A, NewAmyAnimData);
 	return;
