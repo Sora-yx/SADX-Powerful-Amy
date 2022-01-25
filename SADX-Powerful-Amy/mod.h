@@ -5,6 +5,8 @@ void ReadConfig(const char* path, const HelperFunctions& helperFunctions);
 
 extern Buttons BounceButton;
 extern Buttons LightDashButton;
+extern Buttons SpinDashButton;
+extern bool isHomingAttack;
 
 enum AmyActions {
 	Act_Amy_Init,
@@ -62,6 +64,9 @@ enum AmyActions {
 	Act_Amy_Whistle,
 	Act_Amy_Debug,
 
+	//new tricks
+	Act_Amy_HammerProp,
+	Act_Amy_TailsGrab,
 	// Custom Ones
 
 	Act_Amy_SpinDash = 60,
@@ -95,3 +100,9 @@ void init_LightDashHack();
 void Load_AmyNewMDlAnim();
 void InitSA2AnimHack(AnimThing* animinfo);
 void Init_AmyNewAnim();
+
+enum AmyCustomSound {
+	Snd_HomingAttack = 821,
+	Snd_SpinDash,
+	Snd_SpinDashRelease
+};

@@ -217,6 +217,8 @@ LABEL_7:
 	}
 }
 
+bool IsPlayVoice = false;
+
 void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 {
 	auto mwp = (motionwk2*)data2;
@@ -236,6 +238,8 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 
 		break;
 	case Act_Amy_Jump:
+		data->Status &= ~Status_Ball;
+		IsPlayVoice = false;
 
 		if (CheckHomingAttack(co2, data, data2))
 			return;
@@ -247,13 +251,28 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 			return;
 
 		break;
+	case Act_Amy_Fall:
+		if (Amy_CheckBounceAttack(co2, data))
+			return;
+
+		if (Amy_CheckLightDash(co2, data))
+			return;
+		break;
 	case Act_Amy_Launch:
 	case Act_Amy_Spring:
-	case Act_Amy_Fall:
+
 	case Act_Amy_Push:
 
 		if (Amy_CheckLightDash(co2, data))
 			return;
+		break;
+	case Act_Amy_HammerProp:
+		if (co2->Speed.x > 3.0 && !IsPlayVoice)
+		{
+			PlayVoice(1743);
+			IsPlayVoice = true;
+			return;
+		}
 		break;
 	case Act_Amy_SpinDash:
 		Do_SpinDash(co2, data, data2);
@@ -280,7 +299,6 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 		DoLightDashAction(data, co2, data2);
 		break;
 	}
-
 
 	FunctionPointer(void, original, (EntityData1 * data, EntityData2 * data2, CharObj2 * co2), Amy_RunsActions_t->Target());
 	return original(data, data2, co2);

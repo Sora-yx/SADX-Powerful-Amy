@@ -2,7 +2,7 @@
 
 signed int CheckHomingAttack(CharObj2* co2, EntityData1* data, EntityData2* data2) {
 
-	if ((Controllers[data->CharIndex].PressedButtons & Buttons_A) == 0 )
+	if ((Controllers[data->CharIndex].PressedButtons & Buttons_A) == 0 || !isHomingAttack)
 	{
 		return 0;
 	}
@@ -44,7 +44,7 @@ void DoHomingAttack(CharObj2* co2, EntityData1* data, EntityData2* data2)
             else if ((data->Status & 3) != 0)
             {
            
-                PlaySound(33, 0, 0, 0);
+                PlaySound(821, 0, 0, 0);
                 data->Status &= 0xFAu;
                 if (Player_CheckBreak((taskwk*)data) && co2->Speed.x > 0.0)
                 {
