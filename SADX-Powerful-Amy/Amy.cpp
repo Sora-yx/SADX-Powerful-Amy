@@ -10,10 +10,12 @@ Trampoline* Sonic_Main_t = nullptr;
 NJS_TEXNAME AmyEffR_TEXNAMES[40];
 NJS_TEXLIST AmyEffR_TEXLIST = { arrayptrandlength(AmyEffR_TEXNAMES) };
 
+
 static Trampoline* LoadLevelObject_t = nullptr;
 
 PhysicsData Amy_SA2Physics = { 60, 2, 16, 16, 1.3, 0.6,	1.3, 3, 0.23, 0.46, 1.39, 2.3, 3.7, 5.09, 0.076, 0.048, 0.031, -0.06, -0.18, -0.17, -0.028, -0.008, -0.01, -0.4, -0.1, -0.6, -0.2825, 0.3, 4, 10, 0.08, 7,	5.4 };
 PhysicsData Amy_HeroesPhysics = { 60, 2, 32, 32, 4.5, 0.6, 1.66, 3, 0.23, 0.46, 1.39, 2.3, 3.7, 5.09, 0.076, 0.09, 0.031, -0.06, -0.18, -0.14, -0.028, -0.008, -0.01, -0.4, -0.1, -0.6, -0.2825, 0.3, 4, 10, 0.08, 7, 5.4 };
+
 
 void __cdecl Amy_Display_r(ObjectMaster* obj)
 {
@@ -316,11 +318,10 @@ void Amy_Main_r(ObjectMaster* obj)
 	auto co2 = (CharObj2*)pwk;
 	auto data2 = (EntityData2*)mwp;
 
-
-
 	switch (data->Action)
 	{
 	case 0:
+		init_SpinDashTexture();
 		InitSA2AnimHack(&co2->AnimationThing);
 		break;
 	case Act_Amy_SpinDash:
@@ -329,6 +330,7 @@ void Amy_Main_r(ObjectMaster* obj)
 		PGetSpeed(wk, mwp, pwk);
 		PSetPosition(wk, mwp, pwk);
 		PResetPosition(wk, mwp, pwk);
+		LoadSpinDashEffect(data);
 		break;
 	case Act_Amy_Rolling:
 		PGetRotation(wk, mwp, pwk);

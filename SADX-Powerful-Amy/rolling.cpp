@@ -19,7 +19,7 @@ void DoRolling(EntityData1* data, CharObj2* co2, EntityData2* data2)
 
     if (Amy_CheckJump(co2, data, data2))
     {
-        data->Status = data->Status & ~0x2000 | 0x500;
+        data->Status &= ~Status_Ground | Status_OnColli;
         return;
     }
 

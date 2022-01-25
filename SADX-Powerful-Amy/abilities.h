@@ -11,3 +11,5 @@ void DoHomingAttack(CharObj2* co2, EntityData1* data, EntityData2* data2);
 signed int Amy_CheckBounceAttack(CharObj2* a1, EntityData1* a2);
 void DoLightDashAction(EntityData1* data, CharObj2* co2, EntityData2* data2);
 Bool Amy_CheckLightDash(CharObj2* a1, EntityData1* a2);
+void LoadSpinDashEffect(EntityData1* data);
+void init_SpinDashTexture();
