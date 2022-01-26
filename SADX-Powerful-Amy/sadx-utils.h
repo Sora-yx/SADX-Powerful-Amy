@@ -89,3 +89,6 @@ static inline int Amy_CheckStop(CharObj2* a1, EntityData1* a2, EntityData2* a3)
 FunctionPointer(void, DrawCharacterShadow, (EntityData1* a1, shadowwk* a2), 0x49F0B0);
 FunctionPointer(void, DrawEventAction, (EntityData1* a1), 0x4187D0);
 DataArray(AnimData, AmyAnimData, 0x3C54880, 102);
+FunctionPointer(bool, CheckCollisionForPanelJump, (EntityData1* data), 0x4B83C0);
+FunctionPointer(signed int, CanIMakeJumpPanel, (EntityData1* data), 0x4B83F0);
+FunctionPointer(void, StartPlayerPanelJump, (EntityData1* data), 0x4B8470);

@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "abilities.h"
 
-
 Trampoline* Amy_Exec_t = nullptr;
 Trampoline* Amy_RunsActions_t = nullptr;
 
@@ -15,7 +14,6 @@ static Trampoline* LoadLevelObject_t = nullptr;
 
 PhysicsData Amy_SA2Physics = { 60, 2, 16, 16, 1.3, 0.6,	1.3, 3, 0.23, 0.46, 1.39, 2.3, 3.7, 5.09, 0.076, 0.048, 0.031, -0.06, -0.18, -0.17, -0.028, -0.008, -0.01, -0.4, -0.1, -0.6, -0.2825, 0.3, 4, 10, 0.08, 7,	5.4 };
 PhysicsData Amy_HeroesPhysics = { 60, 2, 32, 32, 4.5, 0.6, 1.66, 3, 0.23, 0.46, 1.39, 2.3, 3.7, 5.09, 0.076, 0.09, 0.031, -0.06, -0.18, -0.14, -0.028, -0.008, -0.01, -0.4, -0.1, -0.6, -0.2825, 0.3, 4, 10, 0.08, 7, 5.4 };
-
 
 void __cdecl Amy_Display_r(ObjectMaster* obj)
 {
@@ -262,12 +260,56 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 		break;
 	case Act_Amy_Launch:
 	case Act_Amy_Spring:
-
 	case Act_Amy_Push:
 
 		if (Amy_CheckLightDash(co2, data))
 			return;
+
 		break;
+	case Act_Amy_JumpPanel:
+		if (Amy_NAct(co2, data2, data))
+		{
+			return;
+		}
+
+		if (CheckCollisionForPanelJump(data))
+		{
+			PlaySound(33, 0, 0, 0);
+			PlayerClearSpeed(data2, co2);
+			data->Action = Act_Amy_JumpPanelOn;
+			co2->AnimationThing.Index = 74;
+		}
+		else if ((data->Status & (Status_OnColli | Status_Ground)) != 0)
+		{
+			PlaySound(33, 0, 0, 0);
+			PlayerClearSpeed(data2, co2);
+			data->Action = 1;
+			co2->IdleTime = 0;
+			co2->AnimationThing.Index = 2;
+		}
+		return;
+	case Act_Amy_JumpPanelOn:
+		if (Amy_NAct(co2, data2, data))
+		{
+			return;
+		}
+		if (CanIMakeJumpPanel(data) <= 0)
+		{
+			data->Action = 1;
+			co2->IdleTime = 0;
+			co2->AnimationThing.Index = 2;
+			return;
+		}
+		if (JumpAllowed(data) != 2)
+		{
+			return;
+		}
+		StartPlayerPanelJump(data);
+		data->Action = Act_Amy_JumpPanel;
+		co2->AnimationThing.Index = 74;
+		PlaySound(17, 0, 0, 0);	
+		return;
+
 	case Act_Amy_HammerProp:
 		if (co2->Speed.x > 3.0 && !IsPlayVoice)
 		{
@@ -398,8 +440,6 @@ void __cdecl Sonic_Main_r(ObjectMaster* obj)
 	auto ed2 = (EntityData2*)obj->Data2;
 	auto co2 = ed2->CharacterData;
 }
-
-
 
 void __cdecl LoadLevelObject_r() {
 

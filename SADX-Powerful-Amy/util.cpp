@@ -48,3 +48,19 @@ void FreeMDL(ModelInfo* pointer) {
 		pointer = nullptr;
 	}
 }
+
+void __cdecl PlayerClearSpeed(EntityData2* a1, CharObj2* a2)
+{
+	if (a2)
+	{
+		a2->Speed.z = 0.0;
+		a2->Speed.y = 0.0;
+		a2->Speed.x = 0.0;
+	}
+	if (a1)
+	{
+		a1->VelocityDirection.z = 0.0;
+		a1->VelocityDirection.y = 0.0;
+		a1->VelocityDirection.x = 0.0;
+	}
+}
