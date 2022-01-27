@@ -30,9 +30,9 @@ void ReadConfig(const char* path, const HelperFunctions& helperFunctions) {
 	amyPhysics = config->getInt("General", "amyPhysics", SA2Physics);
 	isHomingAttack = config->getBool("General", "isHomingAttack", true);
 
-	BounceButton = (Buttons)config->getInt("General", "BounceButton", Buttons_B);
-	LightDashButton = (Buttons)config->getInt("General", "LightDashButton", Buttons_Y);
-	SpinDashButton = (Buttons)config->getInt("General", "SpinDashButton", Buttons_X);
+	BounceButton = (Buttons)config->getInt("Controller", "BounceButton", Buttons_B);
+	LightDashButton = (Buttons)config->getInt("Controller", "LightDashButton", Buttons_Y);
+	SpinDashButton = (Buttons)config->getInt("Controller", "SpinDashButton", Buttons_X);
 
 	delete config;
 

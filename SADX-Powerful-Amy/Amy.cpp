@@ -10,6 +10,36 @@ NJS_TEXLIST AmyEffR_TEXLIST = { arrayptrandlength(AmyEffR_TEXNAMES) };
 
 static Trampoline* LoadLevelObject_t = nullptr;
 
+//used to make Homing Attack and spin dash doing damage copy from Sonic_Main.
+void Amy_ManageColDamage(EntityData1* data)
+{
+	CollisionInfo* colList = data->CollisionInfo;
+	char v9;
+	char v10;
+	EntityData1* v12;
+	if (colList)
+	{
+		CollisionData* colInfo2 = colList->CollisionArray;
+		if ((data->Status & Status_Ball) != 0 || data->Status & Status_Attack)
+		{
+			v9 = 1;
+			v10 = 1;
+		}
+		else
+		{
+			v9 = 0;
+			v10 = data->Action == Act_Amy_BumperCar;
+		}
+
+		colInfo2->damage = v9 & 3 | colInfo2->damage & 0xF0 | (4 * (v10 & 3));
+		colList = (CollisionInfo*)data->CollisionInfo->CollisionArray;
+		{
+			v12 = (EntityData1*)((int)colList->CollisionThings[4].hit_twp | 0x10);
+		}
+		colList->CollisionThings[4].hit_twp = v12;
+	}
+}
+
 void __cdecl Amy_Display_r(ObjectMaster* obj)
 {
 
@@ -26,10 +56,10 @@ void __cdecl Amy_Display_r(ObjectMaster* obj)
 	Angle v15; // eax
 	Angle v16; // eax
 	Angle v17; // eax
-	float frameNumber; 
-	NJS_VECTOR v; 
-	NJS_VECTOR a2; 
-	NJS_VECTOR vs; 
+	float frameNumber;
+	NJS_VECTOR v;
+	NJS_VECTOR a2;
+	NJS_VECTOR vs;
 
 	EntityData1* data1 = obj->Data1;
 	CharObj2* co2 = ((EntityData2*)obj->Data2)->CharacterData;
@@ -152,7 +182,7 @@ LABEL_7:
 		{
 			njRotateX(0, (unsigned __int16)v17);
 		}
-	
+
 		if (data1->Rotation.y != 0x8000)
 		{
 			njRotateY(0, (unsigned __int16)(0x8000 - data1->Rotation.y));
@@ -187,7 +217,7 @@ LABEL_7:
 			}
 			else
 			{
-				if ( (data1->Status & Status_Ball) != 0 && (co2->SonicSpinTimer & 0x11) != 0 && data1->Action != Act_Amy_Jump && data1->Action != Act_Amy_Fall)
+				if ((data1->Status & Status_Ball) != 0 && (co2->SonicSpinTimer & 0x11) != 0 && data1->Action != Act_Amy_Jump && data1->Action != Act_Amy_Fall)
 				{
 					njSetTexture(&AmyEffR_TEXLIST);
 					Anim = Anm_Amy_SpinBall;
@@ -299,7 +329,7 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 		StartPlayerPanelJump(data);
 		data->Action = Act_Amy_JumpPanel;
 		co2->AnimationThing.Index = 74;
-		PlaySound(17, 0, 0, 0);	
+		PlaySound(17, 0, 0, 0);
 		return;
 	case Act_Amy_SpinDash:
 		Do_SpinDash(co2, data, data2);
@@ -413,6 +443,8 @@ void Amy_Main_r(ObjectMaster* obj)
 
 	ObjectFunc(original, Amy_Exec_t->Target());
 	original(obj);
+
+	Amy_ManageColDamage(data);
 }
 
 void __cdecl LoadLevelObject_r() {
@@ -430,7 +462,6 @@ void init_AmyHacks() {
 
 	Load_AmyNewMDlAnim();
 
-	//memcpy(&PhysicsArray[Characters_Amy], &Amy_HeroesPhysics, sizeof(PhysicsArray[Characters_Amy]));
 	WriteJump(Amy_Display, Amy_Display_r);
 	Init_AmyNewAnim();
 

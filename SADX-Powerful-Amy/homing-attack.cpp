@@ -8,6 +8,8 @@ signed int CheckHomingAttack(CharObj2* co2, EntityData1* data, EntityData2* data
 	}
 
 	data->Action = Act_Amy_HomingAttack;
+    data->Status |= Status_Ball | Status_Attack;
+    co2->AnimationThing.Index = Anm_Amy_Rolling;
 	DoHomingAttackThing(co2, data, data2);
 	return 1;
 }
