@@ -31,6 +31,16 @@ signed int Amy_PerformBounce(CharObj2* co2, EntityData1* a2)
 	return 1;
 }
 
+
+void Swap_ToHomingAttack(CharObj2* co2, EntityData1* data1, motionwk2* data2)
+{
+	co2->Speed.x = 5.0;
+	data1->Action = Act_Amy_HomingAttack;
+	data1->Status |= Status_Ball | Status_Attack;
+	co2->AnimationThing.Index = Anm_Amy_Rolling;
+	DoHomingAttackThing(co2, data1, (EntityData2*)data2);
+}
+
 float getGrav = 0.0;
 
 void Do_BounceDown(EntityData1* data1, CharObj2* co2, motionwk2* data2) {
@@ -69,10 +79,7 @@ void Do_BounceDown(EntityData1* data1, CharObj2* co2, motionwk2* data2) {
 			return;
 		}
 	}
-	co2->Speed.x = 5.0;
-	data1->Status &= ~Status_Ball;
-	data1->Action = Act_Amy_HomingAttack;
-	DoHomingAttackThing(co2, data1, (EntityData2*)data2);
+	Swap_ToHomingAttack(co2, data1, data2);
 }
 
 void Do_BounceUP(EntityData1* data1, CharObj2* co2, motionwk2* data2) {
@@ -124,10 +131,7 @@ void Do_BounceUP(EntityData1* data1, CharObj2* co2, motionwk2* data2) {
 	}
 	else
 	{
-		data1->Status &= ~Status_Ball;
-		co2->Speed.x = 5.0;
-		data1->Action = Act_Amy_HomingAttack;
-		DoHomingAttackThing(co2, data1, (EntityData2*)data2);
+		Swap_ToHomingAttack(co2, data1, data2);
 	}
 	return;
 }

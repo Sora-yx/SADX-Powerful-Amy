@@ -8,6 +8,8 @@ extern Buttons LightDashButton;
 extern Buttons SpinDashButton;
 extern bool isHomingAttack;
 
+#define TRAMPOLINE(name) ((decltype(name##_r)*)name##_t->Target())
+
 enum AmyActions {
 	Act_Amy_Init,
 	Act_Amy_Stand,

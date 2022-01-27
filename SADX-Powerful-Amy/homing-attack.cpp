@@ -30,6 +30,10 @@ void DoHomingAttack(CharObj2* co2, EntityData1* data, EntityData2* data2)
         if (timer >= 360 || colObj && ((colID = colObj->id) == 0 || colID == 2 || colID == 3))
         {
             co2->LightdashTime = -1;
+
+            //patch height killed for whatever reason
+            co2->Speed = { 1.0f, 2.0f, 0.0f };
+
             data->Action = Act_Amy_Jump;
         }
         else
@@ -41,12 +45,10 @@ void DoHomingAttack(CharObj2* co2, EntityData1* data, EntityData2* data2)
                 co2->LightdashTime = 0;
                 data->Action = Act_Amy_Fall;
                 co2->AnimationThing.Index = Anm_Amy_Fall;
-               data->Status &= 0xFAu;
+                data->Status &= 0xFAu;
             }
             else if ((data->Status & 3) != 0)
             {
-           
-                PlaySound(821, 0, 0, 0);
                 data->Status &= 0xFAu;
                 if (Player_CheckBreak((taskwk*)data) && co2->Speed.x > 0.0)
                 {
@@ -65,10 +67,6 @@ void DoHomingAttack(CharObj2* co2, EntityData1* data, EntityData2* data2)
                         return;
                     }
 
-                    if (co2->Speed.y <= -5.0)
-                    {
-                        //goto LABEL_456;
-                    }
                     co2->AnimationThing.Index = 2;
                 }
             }

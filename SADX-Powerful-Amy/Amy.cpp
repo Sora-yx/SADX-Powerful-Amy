@@ -10,6 +10,8 @@ NJS_TEXLIST AmyEffR_TEXLIST = { arrayptrandlength(AmyEffR_TEXNAMES) };
 
 static Trampoline* LoadLevelObject_t = nullptr;
 
+static Trampoline* ResetAngle_t = nullptr;
+
 //used to make Homing Attack and spin dash doing damage copy from Sonic_Main.
 void Amy_ManageColDamage(EntityData1* data)
 {
@@ -42,7 +44,6 @@ void Amy_ManageColDamage(EntityData1* data)
 
 void __cdecl Amy_Display_r(ObjectMaster* obj)
 {
-
 	__int16 curAnim; // ax
 	double v5; // st7
 	double v6; // st7
@@ -64,7 +65,6 @@ void __cdecl Amy_Display_r(ObjectMaster* obj)
 	EntityData1* data1 = obj->Data1;
 	CharObj2* co2 = ((EntityData2*)obj->Data2)->CharacterData;
 	EntityData2* data2 = (EntityData2*)obj->Data2;
-
 
 	Direct3D_SetZFunc(3u);
 	if (co2->LightdashTime != 1)
@@ -205,7 +205,6 @@ LABEL_7:
 		}
 		else if ((Controllers[data1->CharIndex].HeldButtons & 0x400) != 0 && data1->Action == 53)
 		{
-
 			dsDrawObject(co2->AnimationThing.AnimData[(unsigned __int16)co2->AnimationThing.Index].Animation->object);
 		}
 		else
@@ -468,7 +467,6 @@ void init_AmyHacks() {
 	init_LightDashHack();
 	init_BirdHack();
 	init_AuraTexture();
-
 	//WriteData<1>((int*)0x4A2A70, 0xC3);
 	return;
 }
