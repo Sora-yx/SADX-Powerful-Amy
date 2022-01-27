@@ -1,7 +1,6 @@
 #include "pch.h"
 
 extern NJS_TEXLIST AmyEffR_TEXLIST;
-
 NJS_TEXLIST Amy_BallTexlistDash[2];
 
 void effectSpinInit(EntityData1* a1)
@@ -70,7 +69,6 @@ void effectSpinInit(EntityData1* a1)
     }
 }
 
-
 void __cdecl EffectSpin_r(ObjectMaster* a1)
 {
     effectSpinInit(a1->Data1);
@@ -88,8 +86,6 @@ void LoadSpinDashEffect(EntityData1* data) {
         spin->Data1->CharIndex = data->CharIndex;
     }
 }
-
-ObjectFunc(sub_4A2A70, 0x4A2A70);
 
 void HomingAura_Init(EntityData1* a1)
 {

@@ -10,7 +10,6 @@ AnimationFile* SpinDashMotion = nullptr;
 AnimationFile* RollingMotion = nullptr;
 AnimationFile* SpinBallMotion = nullptr;
 
-
 AnimData SpinDashAnim = { nullptr, 78, 10, Anm_Amy_SpinDash, 0.25f, 0.20f };
 AnimData RollingAnim = { nullptr, 78, 9, Anm_Amy_Rolling, 0.25f, 0.70f };
 AnimData SpinBallAnim = { nullptr, 78, 3, Anm_Amy_SpinBall, 0.50f, 1.0f };

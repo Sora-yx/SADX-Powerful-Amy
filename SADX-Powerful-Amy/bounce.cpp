@@ -31,7 +31,6 @@ signed int Amy_PerformBounce(CharObj2* co2, EntityData1* a2)
 	return 1;
 }
 
-
 void Swap_ToHomingAttack(CharObj2* co2, EntityData1* data1, motionwk2* data2)
 {
 	co2->Speed.x = 5.0;

@@ -97,4 +97,4 @@ DataPointer(NJS_OBJECT*, Beta_Flicky, 0x2E219F4);
 
 ObjectFunc(EffectSpinDisplay, 0x4A0CB0);
 ObjectFunc(sub_4A0E30, 0x4A0E30);
-
+ObjectFunc(sub_4A2A70, 0x4A2A70);

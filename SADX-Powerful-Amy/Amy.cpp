@@ -10,12 +10,9 @@ NJS_TEXLIST AmyEffR_TEXLIST = { arrayptrandlength(AmyEffR_TEXNAMES) };
 
 static Trampoline* LoadLevelObject_t = nullptr;
 
-static Trampoline* ResetAngle_t = nullptr;
-
 //used to make Homing Attack and spin dash doing damage copy from Sonic_Main.
 void Amy_ManageColDamage(EntityData1* data, CharObj2* co2)
 {
-
 	if (!co2 || co2->Upgrades & Upgrades_SuperSonic || co2->Powerups & Powerups_Invincibility)
 		return;
 
@@ -75,21 +72,19 @@ void __cdecl Amy_Display_r(ObjectMaster* obj)
 	{
 		if (EV_MainThread_ptr != 0)
 		{
-			goto LABEL_6;
+			co2->SomeFrameNumberThing = 0.0;
 		}
 		curAnim = co2->AnimationThing.Index;
 		if (curAnim == 13)
 		{
 			co2->SomeFrameNumberThing = 1.0;
-			goto LABEL_7;
 		}
-		if ((unsigned __int16)curAnim < 85u)
+		else if ((unsigned __int16)curAnim < 85u)
 		{
-		LABEL_6:
 			co2->SomeFrameNumberThing = 0.0;
 		}
 	}
-LABEL_7:
+
 	v5 = co2->TailsFlightTime + 0.1;
 	if (v5 >= co2->SomeFrameNumberThing)
 	{
@@ -224,9 +219,6 @@ LABEL_7:
 				{
 					njSetTexture(&AmyEffR_TEXLIST);
 					Anim = Anm_Amy_SpinBall;
-				}
-				else {
-					njSetTexture(&AMY_TEXLIST);
 				}
 
 				njAction(co2->AnimationThing.AnimData[Anim].Animation, frameNumber);
@@ -364,7 +356,6 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 	return original(data, data2, co2);
 }
 
-
 auto LoadAmy_AfterImage = GenerateUsercallWrapper<signed int (*)(EntityData1* a1, CharObj2* a2)>(noret, 0x4871B0, rEAX, rESI);
 
 void Amy_Main_r(ObjectMaster* obj)
@@ -471,6 +462,5 @@ void init_AmyHacks() {
 	init_LightDashHack();
 	init_BirdHack();
 	init_AuraTexture();
-	//WriteData<1>((int*)0x4A2A70, 0xC3);
 	return;
 }

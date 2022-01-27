@@ -2,7 +2,6 @@
 
 void DoRolling(EntityData1* data, CharObj2* co2, EntityData2* data2)
 {
-
     if (Amy_NAct(co2, data2, data))
     {
         return;
