@@ -1,19 +1,14 @@
 #include "pch.h"
 #include "abilities.h"
+#include "UsercallFunctionHandler.h"
 
 Trampoline* Amy_Exec_t = nullptr;
 Trampoline* Amy_RunsActions_t = nullptr;
 
-Trampoline* Sonic_Main_t = nullptr;
-
 NJS_TEXNAME AmyEffR_TEXNAMES[40];
 NJS_TEXLIST AmyEffR_TEXLIST = { arrayptrandlength(AmyEffR_TEXNAMES) };
 
-
 static Trampoline* LoadLevelObject_t = nullptr;
-
-PhysicsData Amy_SA2Physics = { 60, 2, 16, 16, 1.3, 0.6,	1.3, 3, 0.23, 0.46, 1.39, 2.3, 3.7, 5.09, 0.076, 0.048, 0.031, -0.06, -0.18, -0.17, -0.028, -0.008, -0.01, -0.4, -0.1, -0.6, -0.2825, 0.3, 4, 10, 0.08, 7,	5.4 };
-PhysicsData Amy_HeroesPhysics = { 60, 2, 32, 32, 4.5, 0.6, 1.66, 3, 0.23, 0.46, 1.39, 2.3, 3.7, 5.09, 0.076, 0.09, 0.031, -0.06, -0.18, -0.14, -0.028, -0.008, -0.01, -0.4, -0.1, -0.6, -0.2825, 0.3, 4, 10, 0.08, 7, 5.4 };
 
 void __cdecl Amy_Display_r(ObjectMaster* obj)
 {
@@ -217,8 +212,6 @@ LABEL_7:
 	}
 }
 
-bool IsPlayVoice = false;
-
 void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 {
 	auto mwp = (motionwk2*)data2;
@@ -239,7 +232,6 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 		break;
 	case Act_Amy_Jump:
 		data->Status &= ~Status_Ball;
-		IsPlayVoice = false;
 
 		if (CheckHomingAttack(co2, data, data2))
 			return;
@@ -309,15 +301,6 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 		co2->AnimationThing.Index = 74;
 		PlaySound(17, 0, 0, 0);	
 		return;
-
-	case Act_Amy_HammerProp:
-		if (co2->Speed.x > 3.0 && !IsPlayVoice)
-		{
-			PlayVoice(1743);
-			IsPlayVoice = true;
-			return;
-		}
-		break;
 	case Act_Amy_SpinDash:
 		Do_SpinDash(co2, data, data2);
 		break;
@@ -348,7 +331,8 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 	return original(data, data2, co2);
 }
 
-bool isLoaded = false;
+
+auto LoadAmy_AfterImage = GenerateUsercallWrapper<signed int (*)(EntityData1* a1, CharObj2* a2)>(noret, 0x4871B0, rEAX, rESI);
 
 void Amy_Main_r(ObjectMaster* obj)
 {
@@ -363,7 +347,6 @@ void Amy_Main_r(ObjectMaster* obj)
 	switch (data->Action)
 	{
 	case 0:
-		init_SpinDashTexture();
 		InitSA2AnimHack(&co2->AnimationThing);
 		break;
 	case Act_Amy_SpinDash:
@@ -380,15 +363,17 @@ void Amy_Main_r(ObjectMaster* obj)
 		PGetSpeed(wk, mwp, pwk);
 		PSetPosition(wk, mwp, pwk);
 		PResetPosition(wk, mwp, pwk);
+		if (co2->Speed.x >= (double)co2->PhysicsData.RollEnd)
+		{
+			co2->SonicSpinTimeProbably |= 1u;
+		}
 		break;
 	case Act_Amy_HomingAttack:
 		PResetAngle(wk, mwp, pwk);
 		Sonic_HomingAttackThing(co2, data, data2);
 		PSetPosition(wk, mwp, pwk);
 		PResetPosition(wk, mwp, pwk);
-		LoadSonicDashTrail(data);
 		co2->SonicSpinTimeProbably |= 1u;
-		//PSetSpinDashEffect(data);
 		break;
 	case Act_Amy_Bounce:
 	case Act_Amy_BounceUp:
@@ -398,7 +383,6 @@ void Amy_Main_r(ObjectMaster* obj)
 		PGetSpeed(wk, mwp, pwk);
 		PSetPosition(wk, mwp, pwk);
 		PResetPosition(wk, mwp, pwk);
-		//LoadObject(LoadObj_Data1, 6, SonicDashTrail_Init)->Data1->CharIndex = data->CharIndex;
 		break;
 	case Act_Amy_LightDash:
 		Sonic_InitLightDash(data, data2, co2);
@@ -415,9 +399,9 @@ void Amy_Main_r(ObjectMaster* obj)
 		else
 		{
 			PResetPosition(wk, mwp, pwk);
-			//LoadSonicDashTrail(data);
 			co2->SonicSpinTimeProbably |= 1u;
 		}
+		LoadAmy_AfterImage(data, co2);
 		break;
 	}
 
@@ -431,19 +415,8 @@ void Amy_Main_r(ObjectMaster* obj)
 	original(obj);
 }
 
-void __cdecl Sonic_Main_r(ObjectMaster* obj)
-{
-	ObjectFunc(original, Sonic_Main_t->Target());
-	original(obj);
-
-	EntityData1* data = (EntityData1*)obj->Data1;
-	auto ed2 = (EntityData2*)obj->Data2;
-	auto co2 = ed2->CharacterData;
-}
-
 void __cdecl LoadLevelObject_r() {
 
-	LoadPVM("SON_EFF", &SON_EFF_TEXLIST);
 	LoadPVM("amy_efftex", &AmyEffR_TEXLIST);
 
 	auto original = reinterpret_cast<decltype(LoadLevelObject_r)*>(LoadLevelObject_t->Target());
@@ -453,17 +426,18 @@ void __cdecl LoadLevelObject_r() {
 void init_AmyHacks() {
 	Amy_Exec_t = new Trampoline((int)Amy_Main, (int)Amy_Main + 0x7, Amy_Main_r);
 	Amy_RunsActions_t = new Trampoline(0x488880, 0x488888, Amy_RunsActions_r);
-	Sonic_Main_t = new Trampoline((int)Sonic_Main, (int)Sonic_Main + 0x7, Sonic_Main_r);
 	LoadLevelObject_t = new Trampoline((int)LoadLevelObject, (int)LoadLevelObject + 0x7, LoadLevelObject_r);
 
 	Load_AmyNewMDlAnim();
 
-	memcpy(&PhysicsArray[Characters_Amy], &Amy_SA2Physics, sizeof(PhysicsArray[Characters_Amy]));
 	//memcpy(&PhysicsArray[Characters_Amy], &Amy_HeroesPhysics, sizeof(PhysicsArray[Characters_Amy]));
-
-	init_LightDashHack();
-
 	WriteJump(Amy_Display, Amy_Display_r);
 	Init_AmyNewAnim();
+
+	init_LightDashHack();
+	init_BirdHack();
+	init_AuraTexture();
+
+	//WriteData<1>((int*)0x4A2A70, 0xC3);
 	return;
 }

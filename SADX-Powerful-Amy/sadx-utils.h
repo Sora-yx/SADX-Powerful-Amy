@@ -92,3 +92,9 @@ DataArray(AnimData, AmyAnimData, 0x3C54880, 102);
 FunctionPointer(bool, CheckCollisionForPanelJump, (EntityData1* data), 0x4B83C0);
 FunctionPointer(signed int, CanIMakeJumpPanel, (EntityData1* data), 0x4B83F0);
 FunctionPointer(void, StartPlayerPanelJump, (EntityData1* data), 0x4B8470);
+DataPointer(NJS_OBJECT*, Gamma_Flicky, 0x2e5cd6c);
+DataPointer(NJS_OBJECT*, Beta_Flicky, 0x2E219F4);
+
+ObjectFunc(EffectSpinDisplay, 0x4A0CB0);
+ObjectFunc(sub_4A0E30, 0x4A0E30);
+

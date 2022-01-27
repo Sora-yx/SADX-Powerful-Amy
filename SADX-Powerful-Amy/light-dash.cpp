@@ -16,17 +16,16 @@ Bool Amy_CheckLightDash(CharObj2* a1, EntityData1* a2)
 	a1->AnimationThing.Index = 16;
 	a1->LightdashTime = 10;
 	a1->LightdashTimer = 0;
-	a1->Speed.x = 8.0;       
+	a1->Speed.x = 8.0;
 	a2->Status = a2->Status & ~0x100 | 0x400;
 	PlaySound(764, 0, 0, 0);
-	if (!MetalSonicFlag)
-	{
-		DoSoundQueueThing(0x4CB);
-		int rng = rand() % 2;
 
-		if (rng > 0)
-			PlayVoice(1743);
-	}
+	DoSoundQueueThing(0x4CB);
+	int rng = rand() % 2;
+
+	if (rng > 0)
+		PlayVoice(1743);
+
 	result = 1;
 
 	return result;
@@ -39,7 +38,7 @@ void StopLightDash(EntityData1* data, CharObj2* co2)
 	co2->AnimationThing.Index = Anm_Amy_Brake;
 	if (speed_x > 2.0)
 	{
-		co2->Speed.x = 2.0;  
+		co2->Speed.x = 2.0;
 	}
 	data->Status &= ~Status_LightDash;
 	data->Status &= ~4u;

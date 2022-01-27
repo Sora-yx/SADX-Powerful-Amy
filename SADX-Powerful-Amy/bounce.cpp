@@ -4,7 +4,7 @@ bool rebound = false;
 
 signed int Amy_CheckBounceAttack(CharObj2* a1, EntityData1* a2)
 {
-	if ((BounceButton & Controllers[a2->CharIndex].PressedButtons) == 0)
+	if ((BounceButton & Controllers[a2->CharIndex].PressedButtons) == 0 && BounceButton != 0)
 	{
 		return 0;
 	}
@@ -19,7 +19,7 @@ signed int Amy_CheckBounceAttack(CharObj2* a1, EntityData1* a2)
 
 signed int Amy_PerformBounce(CharObj2* co2, EntityData1* a2)
 {
-	if ((BounceButton & Controllers[a2->CharIndex].PressedButtons) == 0)
+	if ((BounceButton & Controllers[a2->CharIndex].PressedButtons) == 0 && BounceButton != 0)
 	{
 		return 0;
 	}

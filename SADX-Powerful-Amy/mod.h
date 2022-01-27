@@ -91,7 +91,6 @@ enum AmyAnimations {
 	//custom
 	Anm_Amy_SpinDash = 102,
 	Anm_Amy_Rolling,
-	Anm_Amy_Uncurl,
 	Anm_Amy_SpinBall
 };
 
@@ -100,6 +99,7 @@ void init_LightDashHack();
 void Load_AmyNewMDlAnim();
 void InitSA2AnimHack(AnimThing* animinfo);
 void Init_AmyNewAnim();
+void init_BirdHack();
 
 enum AmyCustomSound {
 	Snd_HomingAttack = 821,

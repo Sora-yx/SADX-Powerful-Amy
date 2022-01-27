@@ -8,13 +8,11 @@ static const int AmyAnimData_Length = 102;
 
 AnimationFile* SpinDashMotion = nullptr;
 AnimationFile* RollingMotion = nullptr;
-AnimationFile* UncurlMotion = nullptr;
 AnimationFile* SpinBallMotion = nullptr;
 
 
 AnimData SpinDashAnim = { nullptr, 78, 10, Anm_Amy_SpinDash, 0.25f, 0.20f };
 AnimData RollingAnim = { nullptr, 78, 9, Anm_Amy_Rolling, 0.25f, 0.70f };
-AnimData UncurlAnim = { nullptr, 78, 4, Anm_Amy_Uncurl, 0.0625f, 1.0f };
 AnimData SpinBallAnim = { nullptr, 78, 3, Anm_Amy_SpinBall, 0.50f, 1.0f };
 
 ModelInfo* JumpBallMDL = nullptr;
@@ -36,12 +34,6 @@ void Load_AmyNewMDlAnim() {
 	SpinBallAnim.Animation->motion = SpinBallMotion->getmotion();
 
 	return;
-
-	//TODO ADD THIS
-	LoadAnimation(&UncurlMotion, "Uncurl", HelperFunctionsGlobal);
-	UncurlAnim.Animation = new NJS_ACTION;
-	UncurlAnim.Animation->motion = UncurlMotion->getmotion();
-
 }
 
 //Extend Amy Animation list: We make a new list, copy the old one with a memcpy and add all the new animations after.

@@ -1,5 +1,6 @@
 #include "pch.h"
 
+
 void LoadAnimation(AnimationFile** info, const char* name, const HelperFunctions& helperFunctions)
 {
 	PrintDebug("[Powerful Amy] Loading Animation: %s... ", name);
