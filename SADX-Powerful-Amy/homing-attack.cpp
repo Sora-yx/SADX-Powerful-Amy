@@ -35,6 +35,7 @@ void DoHomingAttack(CharObj2* co2, EntityData1* data, EntityData2* data2)
             co2->Speed = { 1.0f, 2.0f, 0.0f };
 
             data->Action = Act_Amy_Jump;
+            co2->AnimationThing.Index = Anm_Amy_HammerSomerTrickA;
         }
         else
         {

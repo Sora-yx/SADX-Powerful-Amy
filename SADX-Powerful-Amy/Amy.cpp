@@ -13,8 +13,12 @@ static Trampoline* LoadLevelObject_t = nullptr;
 static Trampoline* ResetAngle_t = nullptr;
 
 //used to make Homing Attack and spin dash doing damage copy from Sonic_Main.
-void Amy_ManageColDamage(EntityData1* data)
+void Amy_ManageColDamage(EntityData1* data, CharObj2* co2)
 {
+
+	if (!co2 || co2->Upgrades & Upgrades_SuperSonic || co2->Powerups & Powerups_Invincibility)
+		return;
+
 	CollisionInfo* colList = data->CollisionInfo;
 	char v9;
 	char v10;
@@ -443,7 +447,7 @@ void Amy_Main_r(ObjectMaster* obj)
 	ObjectFunc(original, Amy_Exec_t->Target());
 	original(obj);
 
-	Amy_ManageColDamage(data);
+	Amy_ManageColDamage(data, co2);
 }
 
 void __cdecl LoadLevelObject_r() {
