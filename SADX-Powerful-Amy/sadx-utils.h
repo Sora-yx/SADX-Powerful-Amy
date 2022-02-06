@@ -35,7 +35,6 @@ static inline int Amy_NAct(CharObj2* a1, EntityData2* a2, EntityData1* a3)
 	return result;
 }
 
-
 // signed int __usercall Amy_CheckNextAction@<eax>(CharObj2 *a1@<ecx>, EntityData2 *a2@<edi>, EntityData1 *a3@<esi>)
 static const void* const Amy_JumpPtr = (void*)0x487640;
 static inline int Amy_CheckJump(CharObj2* a1, EntityData1* a2, EntityData2* a3)
@@ -86,6 +85,21 @@ static inline int Amy_CheckStop(CharObj2* a1, EntityData1* a2, EntityData2* a3)
 	return result;
 }
 
+// signed int __usercall Amy_CheckNextAction@<eax>(CharObj2 *a1@<ecx>, EntityData2 *a2@<edi>, EntityData1 *a3@<esi>)
+static const void* const Amy_CheckHammerPtr = (void*)0x485800;
+static inline int Amy_CheckStartHammer(EntityData1* data, CharObj2* co2)
+{
+	int result;
+	__asm
+	{
+		mov esi, [co2]
+		mov edi, [data]
+		call Amy_CheckHammerPtr
+		mov result, eax
+	}
+	return result;
+}
+
 FunctionPointer(void, DrawCharacterShadow, (EntityData1* a1, shadowwk* a2), 0x49F0B0);
 FunctionPointer(void, DrawEventAction, (EntityData1* a1), 0x4187D0);
 DataArray(AnimData, AmyAnimData, 0x3C54880, 102);
@@ -98,3 +112,4 @@ DataPointer(NJS_OBJECT*, Beta_Flicky, 0x2E219F4);
 ObjectFunc(EffectSpinDisplay, 0x4A0CB0);
 ObjectFunc(sub_4A0E30, 0x4A0E30);
 ObjectFunc(sub_4A2A70, 0x4A2A70);
+DataPointer(int, hammer_count, 0x3C546C0);

@@ -254,6 +254,11 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 		if (Amy_CheckLightDash(co2, data))
 			return;
 
+		if (Amy_CheckStartHammer(data, co2) && HammerAttackButton > 0)
+		{
+			break;
+		}
+
 		break;
 	case Act_Amy_Jump:
 		data->Status &= ~Status_Ball;
@@ -262,18 +267,20 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 			return;
 
 		if (Amy_CheckBounceAttack(co2, data))
-			return;
+			break;
 
 		if (Amy_CheckLightDash(co2, data))
-			return;
+			break;
 
 		break;
 	case Act_Amy_Fall:
+
 		if (Amy_CheckBounceAttack(co2, data))
 			return;
 
 		if (Amy_CheckLightDash(co2, data))
 			return;
+
 		break;
 	case Act_Amy_Launch:
 	case Act_Amy_Spring:
@@ -286,7 +293,7 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 	case Act_Amy_JumpPanel:
 		if (Amy_NAct(co2, data2, data))
 		{
-			return;
+			break;
 		}
 
 		if (CheckCollisionForPanelJump(data))
@@ -308,7 +315,7 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 	case Act_Amy_JumpPanelOn:
 		if (Amy_NAct(co2, data2, data))
 		{
-			return;
+			break;
 		}
 		if (CanIMakeJumpPanel(data) <= 0)
 		{

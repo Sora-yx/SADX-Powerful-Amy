@@ -3,7 +3,7 @@
 BOOL Amy_ChargeSpindash(CharObj2* co2, EntityData1* Data1)
 {
 
-    if ((SpinDashButton & Controllers[Data1->CharIndex].PressedButtons) == 0 && SpinDashButton != 0)
+    if (!SpinDashButton || (SpinDashButton & Controllers[Data1->CharIndex].PressedButtons) == 0)
     {
         return 0;
     }
@@ -21,7 +21,7 @@ BOOL Amy_ChargeSpindash(CharObj2* co2, EntityData1* Data1)
     {
         co2->SpindashSpeed = co2->Speed.x;
     }
-    QueueSound_DualEntity(767, Data1, 1, 0, 2);
+   // QueueSound_DualEntity(767, Data1, 1, 0, 2);
     return 1;
 }
 
@@ -52,9 +52,9 @@ signed int Amy_ReleaseSpindash(EntityData1* a1, CharObj2* a2)
         }
         a2->AnimationThing.Index = 20; //uncurl from rolling
         a1->Status &= 0xFAFFu;
-        DoSoundQueueThing(767);
+        /**DoSoundQueueThing(767);
         DoSoundQueueThing(763);
-        PlaySound(1227, 0, 0, 0);
+        PlaySound(1227, 0, 0, 0);*/
         
         result = 1;
     }
@@ -66,7 +66,7 @@ signed int Amy_ReleaseSpindash(EntityData1* a1, CharObj2* a2)
             {
                 a2->SpindashSpeed = a2->SpindashSpeed + 0.40000001;
             }
-                QueueSound_DualEntity(767, a1, 1, 0, 2);
+                //QueueSound_DualEntity(767, a1, 1, 0, 2);
             result = 0;
         }
         else
@@ -101,14 +101,13 @@ signed int Amy_ReleaseSpindash(EntityData1* a1, CharObj2* a2)
         }
         a2->AnimationThing.Index = 20; //uncurl from rolling
         a1->Status &= 0xFAFFu;
-        DoSoundQueueThing(767);
-        DoSoundQueueThing(763);
+       /** DoSoundQueueThing(767);
+        DoSoundQueueThing(763);*/
         result = 1;
     }
 
     return result;
 }
-
 
 void Do_SpinDash(CharObj2* co2, EntityData1* data, EntityData2* data2)
 {

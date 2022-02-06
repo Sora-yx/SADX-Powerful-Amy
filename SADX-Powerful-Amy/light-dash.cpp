@@ -6,7 +6,7 @@ Bool Amy_CheckLightDash(CharObj2* a1, EntityData1* a2)
 {
 	Bool result; // eax
 
-	if ((Controllers[a2->CharIndex].PressedButtons & LightDashButton) == 0 || (a2->Status & Status_LightDash) == 0)
+	if (!LightDashButton || (Controllers[a2->CharIndex].PressedButtons & LightDashButton) == 0 || (a2->Status & Status_LightDash) == 0)
 	{
 		return 0;
 	}
@@ -33,6 +33,7 @@ Bool Amy_CheckLightDash(CharObj2* a1, EntityData1* a2)
 
 void StopLightDash(EntityData1* data, CharObj2* co2)
 {
+	data->Status &= ~Status_LightDash;
 	data->Action = Act_Amy_Brake; //stop
 	float speed_x = co2->Speed.x;
 	co2->AnimationThing.Index = Anm_Amy_Brake;
@@ -109,13 +110,13 @@ void DoLightDashAction(EntityData1* data, CharObj2* co2, EntityData2* data2) {
 
 void Ring_Main_r(ObjectMaster* obj) {
 
-	if (IsPlayerInsideSphere(&obj->Data1->Position, 20) && EntityData1Ptrs[0]->CharID == Characters_Amy)
+	ObjectFunc(original, Ring_Main_t->Target());
+	original(obj);
+
+	if (IsPlayerInsideSphere(&obj->Data1->Position, 10) && EntityData1Ptrs[0]->CharID == Characters_Amy)
 	{
 		EntityData1Ptrs[0]->Status |= Status_LightDash;
 	}
-
-	ObjectFunc(original, Ring_Main_t->Target());
-	original(obj);
 }
 
 void init_LightDashHack() {

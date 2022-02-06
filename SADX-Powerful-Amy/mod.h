@@ -7,6 +7,10 @@ extern Buttons BounceButton;
 extern Buttons LightDashButton;
 extern Buttons SpinDashButton;
 extern bool isHomingAttack;
+extern Buttons HammerAttackButton;
+
+void ActionRemap_Config(const IniFile* config);
+void init_ActionRemap();
 
 #define TRAMPOLINE(name) ((decltype(name##_r)*)name##_t->Target())
 

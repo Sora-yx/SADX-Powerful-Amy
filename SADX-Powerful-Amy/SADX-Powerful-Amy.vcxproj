@@ -167,6 +167,7 @@
     <ClInclude Include="util.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="action-remap.cpp" />
     <ClCompile Include="Amy.cpp" />
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="aura.cpp" />
