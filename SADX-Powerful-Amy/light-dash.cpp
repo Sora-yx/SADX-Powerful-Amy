@@ -1,78 +1,85 @@
 #include "pch.h"
 
-HomingAttackTarget* isLightDashAllowed(CharObj2* co2, EntityData1* a2, float a3)
+HomingAttackTarget* isLightDashAllowed(CharObj2* co2, EntityData1* a2, float distance)
 {
-	HomingAttackTarget* v4; // edi
-	EntityData1* v5; // ebx
-	EntityData1* v6; // esi
-	long double v7; // st7
-	CollisionData* v8; // eax
-	long double v9; // st7
-	CollisionData* v10; // eax
-	int v11; // eax
-	double v12; // st7
-	float v13; // eax
-	float v14; // ecx
-	float v15; // edx
-	float v16; // eax
-	NJS_VECTOR vd; // [esp+Ch] [ebp-18h] BYREF
-	NJS_VECTOR v18; // [esp+18h] [ebp-Ch] BYREF
-	float a1a; // [esp+28h] [ebp+4h]
+	HomingAttackTarget* v3;
+	EntityData1* targetData; 
+	CollisionInfo* v6;
+	CollisionData* targetDataColArray; 
+	double v8;
+	float v9;
+	float v10;
+	double v11; 
+	double v12; 
+	NJS_VECTOR* v13; 
+	HomingAttackTarget* i; 
+	float v15; 
+	NJS_VECTOR a1; 
+	NJS_VECTOR a2a;
 
-	v4 = HomingAttackTarget_Sonic_B;
+	if (!IsIngame())
+		return 0;
+
+	v3 = HomingAttackTarget_Sonic_B;
 	if (a2->CharIndex)
 	{
-		v4 = HomingAttackTarget_Sonic_C;
+		v3 = HomingAttackTarget_Sonic_C;
 	}
-	if (!v4->entity)
+
+	if (!v3->entity)
 	{
 		return 0;
 	}
+	a2a.x = 1.0;
+	a2a.y = 0.0;
+	a2a.z = 0.0;
+	PConvertVector_P2G((taskwk*)a2, &a2a);
+	njUnitVector(&a2a);
+	targetData = v3->entity;
 
-	v18.x = 1.0;
-	v18.y = 0.0;
-	v18.z = 0.0;
-	PConvertVector_P2G((taskwk*)a2, &v18);
-	njUnitVector(&v18);
-	v6 = v4->entity;
-	v5 = 0;
-	if (v4->entity)
+	for (i = 0; targetData; ++v3)
 	{
-		do
-		{
-			v8 = v6->CollisionInfo->CollisionArray;
-			vd = v6->Position;
-			njAddVector(&vd, &v8->center);
-			njSubVector(&vd, &a2->Position);
-			v7 = sqrt(vd.y * vd.y + vd.z * vd.z + vd.x * vd.x);
-			if (v7 == 0.0)
-			{
-				vd.z = 0.0;
-				vd.y = 0.0;
-				vd.x = 0.0;
-			}
-			else
-			{
-				v9 = 1.0 / v7;
-				vd.x = vd.x * v9;
-				vd.y = vd.y * v9;
-				vd.z = v9 * vd.z;
-			}
-			if ((double)a3 >= njScalor(&vd))
-			{
-				njUnitVector(&vd);
+		v6 = targetData->CollisionInfo;
 
-				if (VectorAngle(&v18, &vd, 0) <= 12288 && (!v5 || v4->distance < (double)*(float*)&a3))
-				{
-					v5 = v6;
-				}
+		if (!v6)
+			return 0;
+
+		targetDataColArray = v6->CollisionArray;
+
+		if (!targetDataColArray)
+			return 0;
+
+		v8 = targetDataColArray->center.x;
+		a1.x = targetData->Position.x;
+		v9 = targetData->Position.y;
+		v10 = targetData->Position.z;
+		a1.x = v8 + a1.x;
+		a1.y = v9;
+		v11 = targetDataColArray->center.y;
+		a1.z = v10;
+		a1.y = v11 + v9;
+		v12 = targetDataColArray->center.z + v10;
+		v13 = &a2->CollisionInfo->CollisionArray->center;
+		a1.z = v12;
+		a1.x = a1.x - v13->x;
+		a1.y = a1.y - v13->y;
+		a1.z = a1.z - v13->z;
+
+		if ((double)distance >= njScalor(&a1))
+		{
+			njUnitVector(&a1);
+
+			if (VectorAngle(&a2a, &a1, 0) <= 12288 && (!i || v15 > (double)v3->distance))
+			{
+				i = v3;
+				v15 = v3->distance;
 			}
-			v6 = v4[1].entity;
-			++v4;
-		} while (v6);
+		}
+
+		targetData = v3[1].entity;
 	}
 
-	return v4;
+	return i;
 }
 
 Bool Amy_CheckLightDash(CharObj2* a1, EntityData1* a2)
@@ -101,7 +108,6 @@ Bool Amy_CheckLightDash(CharObj2* a1, EntityData1* a2)
 		PlayVoice(1743);
 
 	result = 1;
-
 	return result;
 }
 

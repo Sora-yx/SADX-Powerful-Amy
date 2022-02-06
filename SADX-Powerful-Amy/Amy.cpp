@@ -246,10 +246,8 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 	case Act_Amy_Stand:
 	case Act_Amy_Walk:
 
-
 		if (Amy_CheckLightDash(co2, data))
 			return;
-
 
 		if (Amy_ChargeSpindash(co2, data))
 		{
@@ -278,14 +276,13 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 			break;
 
 
-
 		break;
 	case Act_Amy_Fall:
 
-		if (Amy_CheckBounceAttack(co2, data))
+		if (Amy_CheckLightDash(co2, data))
 			return;
 
-		if (Amy_CheckLightDash(co2, data))
+		if (Amy_CheckBounceAttack(co2, data))
 			return;
 
 		break;
@@ -473,7 +470,6 @@ void init_AmyHacks() {
 	WriteJump(Amy_Display, Amy_Display_r);
 	Init_AmyNewAnim();
 
-	init_LightDashHack();
 	init_BirdHack();
 	init_AuraTexture();
 	return;

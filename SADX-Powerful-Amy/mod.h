@@ -101,7 +101,6 @@ enum AmyAnimations {
 };
 
 void init_AmyHacks();
-void init_LightDashHack();
 void Load_AmyNewMDlAnim();
 void InitSA2AnimHack(AnimThing* animinfo);
 void Init_AmyNewAnim();
