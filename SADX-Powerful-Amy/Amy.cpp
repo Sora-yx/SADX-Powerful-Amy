@@ -246,22 +246,30 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 	case Act_Amy_Stand:
 	case Act_Amy_Walk:
 
+
+		if (Amy_CheckLightDash(co2, data))
+			return;
+
+
 		if (Amy_ChargeSpindash(co2, data))
 		{
 			return;
 		}
 
-		if (Amy_CheckLightDash(co2, data))
-			return;
+		if ((data->Status & Status_LightDash) == 0) {
 
-		if (Amy_CheckStartHammer(data, co2) && HammerAttackButton > 0)
-		{
-			break;
+			if (Amy_CheckStartHammer(data, co2) && HammerAttackButton > 0)
+			{
+				break;
+			}
 		}
 
 		break;
 	case Act_Amy_Jump:
 		data->Status &= ~Status_Ball;
+
+		if (Amy_CheckLightDash(co2, data))
+			break;
 
 		if (CheckHomingAttack(co2, data, data2))
 			return;
@@ -269,8 +277,7 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 		if (Amy_CheckBounceAttack(co2, data))
 			break;
 
-		if (Amy_CheckLightDash(co2, data))
-			break;
+
 
 		break;
 	case Act_Amy_Fall:

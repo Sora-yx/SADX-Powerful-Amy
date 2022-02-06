@@ -1,21 +1,95 @@
 #include "pch.h"
 
-Trampoline* Ring_Main_t;
+HomingAttackTarget* isLightDashAllowed(CharObj2* co2, EntityData1* a2, float a3)
+{
+	HomingAttackTarget* v4; // edi
+	EntityData1* v5; // ebx
+	EntityData1* v6; // esi
+	long double v7; // st7
+	CollisionData* v8; // eax
+	long double v9; // st7
+	CollisionData* v10; // eax
+	int v11; // eax
+	double v12; // st7
+	float v13; // eax
+	float v14; // ecx
+	float v15; // edx
+	float v16; // eax
+	NJS_VECTOR vd; // [esp+Ch] [ebp-18h] BYREF
+	NJS_VECTOR v18; // [esp+18h] [ebp-Ch] BYREF
+	float a1a; // [esp+28h] [ebp+4h]
+
+	v4 = HomingAttackTarget_Sonic_B;
+	if (a2->CharIndex)
+	{
+		v4 = HomingAttackTarget_Sonic_C;
+	}
+	if (!v4->entity)
+	{
+		return 0;
+	}
+
+	v18.x = 1.0;
+	v18.y = 0.0;
+	v18.z = 0.0;
+	PConvertVector_P2G((taskwk*)a2, &v18);
+	njUnitVector(&v18);
+	v6 = v4->entity;
+	v5 = 0;
+	if (v4->entity)
+	{
+		do
+		{
+			v8 = v6->CollisionInfo->CollisionArray;
+			vd = v6->Position;
+			njAddVector(&vd, &v8->center);
+			njSubVector(&vd, &a2->Position);
+			v7 = sqrt(vd.y * vd.y + vd.z * vd.z + vd.x * vd.x);
+			if (v7 == 0.0)
+			{
+				vd.z = 0.0;
+				vd.y = 0.0;
+				vd.x = 0.0;
+			}
+			else
+			{
+				v9 = 1.0 / v7;
+				vd.x = vd.x * v9;
+				vd.y = vd.y * v9;
+				vd.z = v9 * vd.z;
+			}
+			if ((double)a3 >= njScalor(&vd))
+			{
+				njUnitVector(&vd);
+
+				if (VectorAngle(&v18, &vd, 0) <= 12288 && (!v5 || v4->distance < (double)*(float*)&a3))
+				{
+					v5 = v6;
+				}
+			}
+			v6 = v4[1].entity;
+			++v4;
+		} while (v6);
+	}
+
+	return v4;
+}
 
 Bool Amy_CheckLightDash(CharObj2* a1, EntityData1* a2)
 {
 	Bool result; // eax
 
-	if (!LightDashButton || (Controllers[a2->CharIndex].PressedButtons & LightDashButton) == 0 || (a2->Status & Status_LightDash) == 0)
+	if (!LightDashButton || !isLightDashAllowed(a1, a2, 32.0f) || (Controllers[0].PressedButtons & LightDashButton) == 0)
 	{
 		return 0;
 	}
 
-	a2->Status &= ~2u;
 	a2->Action = Act_Amy_LightDash;
 	a1->AnimationThing.Index = 16;
 	a1->LightdashTime = 10;
 	a1->LightdashTimer = 0;
+
+	a2->Status &= ~2u;
 	a1->Speed.x = 8.0;
 	a2->Status = a2->Status & ~0x100 | 0x400;
 	PlaySound(764, 0, 0, 0);
@@ -106,19 +180,4 @@ void DoLightDashAction(EntityData1* data, CharObj2* co2, EntityData2* data2) {
 		}
 	}
 	return;
-}
-
-void Ring_Main_r(ObjectMaster* obj) {
-
-	ObjectFunc(original, Ring_Main_t->Target());
-	original(obj);
-
-	if (IsPlayerInsideSphere(&obj->Data1->Position, 10) && EntityData1Ptrs[0]->CharID == Characters_Amy)
-	{
-		EntityData1Ptrs[0]->Status |= Status_LightDash;
-	}
-}
-
-void init_LightDashHack() {
-	Ring_Main_t = new Trampoline((int)Ring_Main, (int)Ring_Main + 0x6, Ring_Main_r);
 }
