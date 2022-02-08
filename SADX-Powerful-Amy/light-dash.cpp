@@ -102,10 +102,14 @@ Bool Amy_CheckLightDash(CharObj2* a1, EntityData1* a2)
 	PlaySound(764, 0, 0, 0);
 
 	DoSoundQueueThing(0x4CB);
-	int rng = rand() % 2;
 
-	if (rng > 0)
-		PlayVoice(1743);
+	int rng = rand() % 3;
+
+	if (rng == 1)
+		PlayVoice(7400);
+
+	if (rng == 2)
+		PlayVoice(7401);
 
 	result = 1;
 	return result;
@@ -121,9 +125,10 @@ void StopLightDash(EntityData1* data, CharObj2* co2)
 	{
 		co2->Speed.x = 2.0;
 	}
-	data->Status &= ~Status_LightDash;
+
 	data->Status &= ~4u;
 	co2->LightdashTime = 0;
+	co2->LightdashTimer = 0;
 	DoSoundQueueThing(764);
 }
 

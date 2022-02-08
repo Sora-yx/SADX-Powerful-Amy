@@ -13,7 +13,10 @@ static Trampoline* LoadLevelObject_t = nullptr;
 //used to make Homing Attack and spin dash doing damage copy from Sonic_Main.
 void Amy_ManageColDamage(EntityData1* data, CharObj2* co2)
 {
-	if (!co2 || co2->Upgrades & Upgrades_SuperSonic || co2->Powerups & Powerups_Invincibility)
+	if (!co2 || !IsIngame() || co2->Upgrades & Upgrades_SuperSonic || co2->Powerups & Powerups_Invincibility)
+		return;
+
+	if (data->Action < Act_Amy_SpinDash && data->Action != Act_Amy_HammerJump && data->Action != Act_Amy_Jump || EV_MainThread_ptr)
 		return;
 
 	CollisionInfo* colList = data->CollisionInfo;
@@ -237,9 +240,12 @@ void __cdecl Amy_Display_r(ObjectMaster* obj)
 	}
 }
 
-void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
+void Amy_RunsNewActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 {
 	auto mwp = (motionwk2*)data2;
+
+	if (!mwp || EV_MainThread_ptr || !IsIngame())
+		return;
 
 	switch (data->Action)
 	{
@@ -264,7 +270,9 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 
 		break;
 	case Act_Amy_Jump:
+
 		data->Status &= ~Status_Ball;
+		co2->TailsFlightTime = 1.0f;
 
 		if (Amy_CheckLightDash(co2, data))
 			break;
@@ -316,6 +324,11 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 			co2->AnimationThing.Index = 2;
 		}
 		return;
+	case Act_Amy_HammerJump:
+		if (CheckHomingAttack(co2, data, data2))
+			return;
+
+		break;
 	case Act_Amy_JumpPanelOn:
 		if (Amy_NAct(co2, data2, data))
 		{
@@ -363,13 +376,19 @@ void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 		break;
 	}
 
+}
+
+void Amy_RunsActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
+{
+	Amy_RunsNewActions_r(data, data2, co2);
+
 	FunctionPointer(void, original, (EntityData1 * data, EntityData2 * data2, CharObj2 * co2), Amy_RunsActions_t->Target());
 	return original(data, data2, co2);
 }
 
 auto LoadAmy_AfterImage = GenerateUsercallWrapper<signed int (*)(EntityData1* a1, CharObj2* a2)>(noret, 0x4871B0, rEAX, rESI);
 
-void Amy_Main_r(ObjectMaster* obj)
+void Amy_NewMain_r(ObjectMaster* obj)
 {
 	task* tsk = (task*)obj;
 	EntityData1* data = (EntityData1*)tsk->twp;
@@ -378,6 +397,10 @@ void Amy_Main_r(ObjectMaster* obj)
 	auto pwk = (playerwk*)mwp->work.ptr; // physics, animation info, and countless other things
 	auto co2 = (CharObj2*)pwk;
 	auto data2 = (EntityData2*)mwp;
+
+
+	if (!mwp || EV_MainThread_ptr || !IsIngame())
+		return;
 
 	switch (data->Action)
 	{
@@ -445,6 +468,19 @@ void Amy_Main_r(ObjectMaster* obj)
 		if (co2)
 			++co2->SonicSpinTimer;
 	}
+
+}
+
+void Amy_Main_r(ObjectMaster* obj)
+{
+
+	Amy_NewMain_r(obj);
+
+	task* tsk = (task*)obj;
+	auto mwp = (motionwk2*)tsk->mwp; // task containing movement information
+	EntityData1* data = (EntityData1*)tsk->twp;
+	auto pwk = (playerwk*)mwp->work.ptr;
+	auto co2 = (CharObj2*)pwk;
 
 	ObjectFunc(original, Amy_Exec_t->Target());
 	original(obj);

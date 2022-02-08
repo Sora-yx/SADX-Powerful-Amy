@@ -1,7 +1,9 @@
 #include "pch.h"
+#include <fstream>
 
 HelperFunctions HelperFunctionsGlobal;
 std::string modpath;
+time_t t;
 
 extern "C" {
 	__declspec(dllexport) void __cdecl Init(const char* path, const HelperFunctions& helperFunctions)
@@ -21,8 +23,8 @@ extern "C" {
 
 		ReadConfig(path, helperFunctions);
 		init_AmyHacks();
+		srand((unsigned)time(&t));
 	}
-
 
 	__declspec(dllexport) void __cdecl OnFrame()
 	{
