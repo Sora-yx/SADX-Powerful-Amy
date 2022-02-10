@@ -16,7 +16,7 @@ void Amy_ManageColDamage(EntityData1* data, CharObj2* co2)
 	if (!co2 || !IsIngame() || co2->Upgrades & Upgrades_SuperSonic || co2->Powerups & Powerups_Invincibility)
 		return;
 
-	if (data->Action < Act_Amy_SpinDash && data->Action != Act_Amy_HammerJump && data->Action != Act_Amy_Jump || EV_MainThread_ptr)
+	if (data->Action < Act_Amy_SpinDash && data->Action != Act_Amy_HammerJump && data->Action != Act_Amy_Jump || EV_MainThread_ptr || data->Action == Act_Amy_HammerAttackR)
 		return;
 
 	CollisionInfo* colList = data->CollisionInfo;
@@ -302,6 +302,28 @@ void Amy_RunsNewActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 			return;
 
 		break;
+	case Act_Amy_HammerAttack:
+		Fix_HammerAttackSpinAnim(co2, data);
+
+		break;
+	case Act_Amy_HammerSpin:
+
+		if (co2->AnimationThing.Index == Anm_Amy_DizzyStand || co2->AnimationThing.Index == Anm_Amy_DizzyWalk)
+		{
+			co2->field_84 = 0;
+			data->Action = 1;
+			return;
+		}
+
+
+
+		break;
+	case Act_Amy_HammerJump:
+		if (CheckHomingAttack(co2, data, data2))
+			return;
+
+
+		break;
 	case Act_Amy_JumpPanel:
 		if (Amy_NAct(co2, data2, data))
 		{
@@ -324,11 +346,7 @@ void Amy_RunsNewActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 			co2->AnimationThing.Index = 2;
 		}
 		return;
-	case Act_Amy_HammerJump:
-		if (CheckHomingAttack(co2, data, data2))
-			return;
 
-		break;
 	case Act_Amy_JumpPanelOn:
 		if (Amy_NAct(co2, data2, data))
 		{
@@ -374,6 +392,9 @@ void Amy_RunsNewActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 	case Act_Amy_LightDash:
 		DoLightDashAction(data, co2, data2);
 		break;
+	case Act_Amy_HammerAttackR:
+		Hammer_Attack_r(co2, data, data2);
+		break;
 	}
 
 }
@@ -399,14 +420,16 @@ void Amy_NewMain_r(ObjectMaster* obj)
 	auto data2 = (EntityData2*)mwp;
 
 
+	if (data->Action == 0)
+	{
+		InitSA2AnimHack(&co2->AnimationThing);
+	}
+
 	if (!mwp || EV_MainThread_ptr || !IsIngame())
 		return;
 
 	switch (data->Action)
 	{
-	case 0:
-		InitSA2AnimHack(&co2->AnimationThing);
-		break;
 	case Act_Amy_SpinDash:
 		PGetRotation(wk, mwp, pwk);
 		PGetBreak(wk, mwp, pwk);
@@ -460,6 +483,13 @@ void Amy_NewMain_r(ObjectMaster* obj)
 			co2->SonicSpinTimeProbably |= 1u;
 		}
 		LoadAmy_AfterImage(data, co2);
+		break;
+	case Act_Amy_HammerAttackR:
+		PGetRotation(wk, mwp, pwk);
+		PGetFriction(wk, mwp, pwk);
+		PGetSpeed(wk, mwp, pwk);
+		PSetPosition(wk, mwp, pwk);
+		PResetPosition(wk, mwp, pwk);
 		break;
 	}
 

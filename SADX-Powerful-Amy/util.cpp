@@ -65,3 +65,39 @@ void __cdecl PlayerClearSpeed(EntityData2* a1, CharObj2* a2)
 		a1->VelocityDirection.x = 0.0;
 	}
 }
+
+Buttons GetHammerAttackButton() {
+
+	if (HammerAttackButton > 0)
+		return HammerAttackButton;
+
+	return AttackButtons;
+}
+
+bool isNewTrick() {
+
+	HMODULE dll = GetModuleHandle(L"sadx-new-tricks");
+
+	if (dll)
+		return true;
+
+	return false;
+}
+
+void njRotateX_(Angle x) {
+	if (x) {
+		njRotateX(_nj_current_matrix_ptr_, x);
+	}
+}
+
+void njRotateY_(Angle y) {
+	if (y) {
+		njRotateY(_nj_current_matrix_ptr_, y);
+	}
+}
+
+void njRotateZ_(Angle z) {
+	if (z) {
+		njRotateZ(_nj_current_matrix_ptr_, z);
+	}
+}

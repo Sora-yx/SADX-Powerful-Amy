@@ -178,6 +178,7 @@
     <ClCompile Include="homing-attack.cpp" />
     <ClCompile Include="light-dash.cpp" />
     <ClCompile Include="mod.cpp" />
+    <ClCompile Include="helper.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -100,6 +100,20 @@ static inline int Amy_CheckStartHammer(EntityData1* data, CharObj2* co2)
 	return result;
 }
 
+// void __usercall Amy_ResetActionAnim(CharObj2 *a1@<ecx>, EntityData1 *a2@<edx>, EntityData2 *a3@<eax>)
+static const void* const Amy_ResetActionPtr = (void*)0x487620;
+static inline void Amy_ResetActionAnim(CharObj2* a1, EntityData1* a2, EntityData2* a3)
+{
+	__asm
+	{
+		mov eax, [a3]
+		mov edx, [a2]
+		mov ecx, [a1]
+		call Amy_ResetActionPtr
+	}
+}
+
+
 FunctionPointer(void, DrawCharacterShadow, (EntityData1* a1, shadowwk* a2), 0x49F0B0);
 FunctionPointer(void, DrawEventAction, (EntityData1* a1), 0x4187D0);
 DataArray(AnimData, AmyAnimData, 0x3C54880, 102);

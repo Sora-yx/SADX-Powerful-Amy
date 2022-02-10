@@ -14,6 +14,12 @@ void init_ActionRemap();
 
 #define TRAMPOLINE(name) ((decltype(name##_r)*)name##_t->Target())
 
+void init_Helper();
+
+constexpr int amyAnimcount = 4;
+extern AnimData NewAmyAnimData[102 + amyAnimcount];
+Buttons GetHammerAttackButton();
+
 enum AmyActions {
 	Act_Amy_Init,
 	Act_Amy_Stand,
@@ -73,6 +79,7 @@ enum AmyActions {
 	//new tricks
 	Act_Amy_HammerProp,
 	Act_Amy_TailsGrab,
+	Act_Amy_SpinR,
 	// Custom Ones
 
 	Act_Amy_SpinDash = 60,
@@ -80,7 +87,8 @@ enum AmyActions {
 	Act_Amy_HomingAttack,
 	Act_Amy_Bounce,
 	Act_Amy_BounceUp,
-	Act_Amy_LightDash
+	Act_Amy_LightDash,
+	Act_Amy_HammerAttackR
 };
 
 enum AmyAnimations {
@@ -90,6 +98,8 @@ enum AmyAnimations {
 	Anm_Amy_Brake = 20,
 	Anm_Amy_HangHook = 55,
 	Anm_Amy_HammerSpinAttack = 90,
+	Anm_Amy_DizzyStand,
+	Anm_Amy_DizzyWalk,
 	Anm_Amy_HammerSomerTrickA = 95,
 	Anm_Amy_HammerSomerTrickB,
 	Anm_Amy_HammerSomerTrickC,

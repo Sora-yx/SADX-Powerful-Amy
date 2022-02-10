@@ -14,3 +14,5 @@ Bool Amy_CheckLightDash(CharObj2* a1, EntityData1* a2);
 void LoadSpinDashEffect(EntityData1* data);
 void init_AuraTexture();
 HomingAttackTarget* isLightDashAllowed(CharObj2* co2, EntityData1* a2, float a3);
+void Fix_HammerAttackSpinAnim(CharObj2* co2, EntityData1* data);
+void Hammer_Attack_r(CharObj2* co2, EntityData1* data, EntityData2* data2);

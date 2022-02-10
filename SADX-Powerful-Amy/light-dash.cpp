@@ -26,7 +26,7 @@ HomingAttackTarget* isLightDashAllowed(CharObj2* co2, EntityData1* a2, float dis
 		v3 = HomingAttackTarget_Sonic_C;
 	}
 
-	if (!v3->entity)
+	if (!v3 || !v3->entity)
 	{
 		return 0;
 	}
@@ -99,9 +99,9 @@ Bool Amy_CheckLightDash(CharObj2* a1, EntityData1* a2)
 	a2->Status &= ~2u;
 	a1->Speed.x = 8.0;
 	a2->Status = a2->Status & ~0x100 | 0x400;
-	PlaySound(764, 0, 0, 0);
+	//PlaySound(764, 0, 0, 0);
 
-	DoSoundQueueThing(0x4CB);
+	//DoSoundQueueThing(0x4CB);
 
 	int rng = rand() % 3;
 
@@ -129,7 +129,7 @@ void StopLightDash(EntityData1* data, CharObj2* co2)
 	data->Status &= ~4u;
 	co2->LightdashTime = 0;
 	co2->LightdashTimer = 0;
-	DoSoundQueueThing(764);
+	//DoSoundQueueThing(764);
 }
 
 void DoLightDashAction(EntityData1* data, CharObj2* co2, EntityData2* data2) {
