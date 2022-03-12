@@ -104,11 +104,8 @@ void Hammer_Attack_r(CharObj2* co2, EntityData1* data, EntityData2* data2)
         if (curAnimHammer == 88)
         {
             co2->SonicSpinTimeProbably = 0;
-
-            if (isNewTrick())
-                data->Action = Act_Amy_SpinR;
-            else
-                data->Action = Act_Amy_HammerSpin;      
+            data->Action = Act_Amy_SpinR;
+   
         }
         else
         {
@@ -145,7 +142,83 @@ static void __declspec(naked) AmyCheckStartHammerASM()
     }
 }
 
+void DoAmySpinAttack(EntityData1* data, EntityData2* data2, CharObj2* co2) {
 
+    if (Amy_NAct(co2, data2, data) || (data->Status & Status_Ground | Status_OnColli) == 0) {
+        return;
+    }
+
+    if ((Controllers[data->CharIndex].HeldButtons & HammerAttackButton) == 0)
+    {
+        data->Status &= ~Status_Attack;
+        data->Action = 1;
+        co2->AnimationThing.Index = 1;
+        return;
+    }
+
+    int v40;
+    int curAnim = co2->AnimationThing.Index;
+    int timerDizzy = co2->field_84;
+    int a2;
+    float v39;
+
+    switch (curAnim)
+    {
+    case 88:
+        co2->SomeFrameNumberThing = 1.0;
+        break;
+    case 89:
+        v39 = (double)HIBYTE(co2->SonicSpinTimeProbably);
+        a2 = HIBYTE(co2->SonicSpinTimer);
+        co2->SomeFrameNumberThing = v39 * 0.041666668 * 0.5 + 1.0;
+        co2->SpindashSpeed = fabs((double)(int)a2) * 0.059999999 + 0.1;
+
+        if (HIBYTE(co2->SonicSpinTimer) <= 0)
+        {
+            co2->SpindashSpeed = 1.0;
+        }
+        else
+        {
+            co2->SpindashSpeed = -1.0;
+        }
+        co2->field_84 = 0;
+        co2->AnimationThing.Index = 90;
+        PlaySound(798, 0, 0, 0);
+
+        break;
+    case 90:
+        a2 = ++co2->field_84;
+        v40 = (double)(int)a2;
+        co2->SomeFrameNumberThing = 1.5;
+        if (v40 > 300.0)          // dizzy timer
+        {
+            co2->Speed.z = 0.0;
+            co2->Speed.y = 0.0;
+            co2->Speed.x = 0.0;
+            co2->field_84 = 0;
+            co2->AnimationThing.Index = 1;
+            data->Action = 1;
+        }
+        if ((co2->field_84 & 7) == 0)
+        {
+            ObjectMaster* wave = LoadObject(LoadObj_Data1, 6, AmyPutHammerWave);
+            if (wave)
+            {
+                wave->Data1->Position = data->Position;
+                wave->Data1->Position.y = co2->PhysicsData.CollisionSize * 0.5 + wave->Data1->Position.y;
+                wave->Data1->Rotation = data->Rotation;
+                wave->Data1->InvulnerableTime = 4;
+                wave->Data1->Index = 0;
+            }
+            RumbleA(data->CharIndex, 0);
+        }
+        break;
+    default:
+        return;
+    }
+    return;
+
+}
 
 void init_ActionRemap() {
     if (HammerAttackButton > 0) {    

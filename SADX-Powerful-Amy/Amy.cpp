@@ -395,6 +395,9 @@ void Amy_RunsNewActions_r(EntityData1* data, EntityData2* data2, CharObj2* co2)
 	case Act_Amy_HammerAttackR:
 		Hammer_Attack_r(co2, data, data2);
 		break;
+	case Act_Amy_SpinR:
+		DoAmySpinAttack(data, data2, co2);
+		break;
 	}
 
 }
@@ -427,6 +430,8 @@ void Amy_NewMain_r(ObjectMaster* obj)
 
 	if (!mwp || EV_MainThread_ptr || !IsIngame())
 		return;
+
+	int curAnim;
 
 	switch (data->Action)
 	{
@@ -491,6 +496,19 @@ void Amy_NewMain_r(ObjectMaster* obj)
 		PSetPosition(wk, mwp, pwk);
 		PResetPosition(wk, mwp, pwk);
 		break;
+	case Act_Amy_SpinR:
+		curAnim = co2->AnimationThing.Index;
+
+		if (curAnim == 91 || curAnim == 92)
+		{
+			PGetRotation(wk, mwp, pwk);
+		}
+		PResetAngle(wk, mwp, pwk);
+		PGetAcceleration(wk, mwp, pwk);
+		PGetSpeed(wk, mwp, pwk);
+		PSetPosition(wk, mwp, pwk);
+		PResetPosition(wk, mwp, pwk);
+		break;
 	}
 
 	if ((data->Status & Status_Ball) != 0)
@@ -526,6 +544,7 @@ void __cdecl LoadLevelObject_r() {
 	original();
 }
 
+
 void init_AmyHacks() {
 	Amy_Exec_t = new Trampoline((int)Amy_Main, (int)Amy_Main + 0x7, Amy_Main_r);
 	Amy_RunsActions_t = new Trampoline(0x488880, 0x488888, Amy_RunsActions_r);
@@ -538,5 +557,6 @@ void init_AmyHacks() {
 
 	init_BirdHack();
 	init_AuraTexture();
+
 	return;
 }

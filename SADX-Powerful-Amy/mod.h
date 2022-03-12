@@ -79,7 +79,6 @@ enum AmyActions {
 	//new tricks
 	Act_Amy_HammerProp,
 	Act_Amy_TailsGrab,
-	Act_Amy_SpinR,
 	// Custom Ones
 
 	Act_Amy_SpinDash = 60,
@@ -88,7 +87,8 @@ enum AmyActions {
 	Act_Amy_Bounce,
 	Act_Amy_BounceUp,
 	Act_Amy_LightDash,
-	Act_Amy_HammerAttackR
+	Act_Amy_HammerAttackR,
+	Act_Amy_SpinR,
 };
 
 enum AmyAnimations {
